@@ -11,9 +11,10 @@ datasource db {
 }
 
 model User {
-  id       String @id @default(uuid())
-  login    String
-  password String
+  id            String   @id @default(uuid())
+  login         String
+  password_hash String
+  created_at    DateTime @default(now())
 }
 
 model Address {
@@ -42,19 +43,34 @@ model Doctor {
   address   Address @relation(fields: [addressId], references: [id])
   addressId String
   activated Int
+  querys    Query[]
 
   @@map("doctors")
 }
 
 model Patient {
-  id        String  @id @default(uuid())
-  name      String
-  email     String  @unique
-  tel       String
-  cpf       String  @unique
-  address   Address @relation(fields: [addressId], references: [id])
-  addressId String
-  activated Int
+  id         String   @id @default(uuid())
+  name       String
+  email      String   @unique
+  tel        String
+  cpf        String   @unique
+  address    Address  @relation(fields: [addressId], references: [id])
+  addressId  String
+  activated  Int
+  created_at DateTime @default(now())
+  querys     Query[]
 
   @@map("patients")
+}
+
+model Query {
+  id                  String   @id @default(uuid())
+  created_at          DateTime @default(now())
+  doctor              Doctor   @relation(fields: [doctorId], references: [id])
+  patient             Patient  @relation(fields: [patientId], references: [id])
+  reason_cancellation String?
+  patientId           String
+  doctorId            String
+
+  @@map("queries")
 }
