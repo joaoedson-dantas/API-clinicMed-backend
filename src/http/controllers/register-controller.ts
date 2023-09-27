@@ -1,6 +1,7 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
-import { registerUserUseCase } from '@/use-cases/register-user'
+import { RegisterUsersUseCase } from '@/use-cases/register-user'
+import { PrismaUsersRepository } from '@/repositories/prisma/prisma-users-repository'
 
 export async function register(request: FastifyRequest, reply: FastifyReply) {
   const registerBodySchema = z.object({
@@ -12,7 +13,11 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
   const { name, login, password } = registerBodySchema.parse(request.body)
 
   try {
-    await registerUserUseCase({
+    // instaciando o caso de uso e passando as dependencias por parametro
+    const usersRepository = new PrismaUsersRepository()
+    const registerUserUseCase = new RegisterUsersUseCase(usersRepository)
+
+    await registerUserUseCase.execute({
       name,
       login,
       password,
@@ -28,9 +33,9 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
 // controller vai chamar o caso de uso
 // Caso de uso vai ter a parte lógica, a parte da funcionalidade em sí.
-// repostory vai intecptar qualquer operação que precisa ser feita ao db, é a conexão com o banco
+// repostory vai intecptar qualquer operação que precisa ser feita ao db, é a conexão com o banco, ele serve para se comunicar com o banco de dados.
 
 /*  1 - Requisisão HTTP 2 -> Controller(HTTP) -> 3 -> Caso de uso(Regra de negócio)  
-    4 - Vai chamar um repostory 
+    4 - Vai chamar um repostory -> Vai fazer a comunicação com o db
 
 */
