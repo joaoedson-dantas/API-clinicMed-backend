@@ -16,6 +16,8 @@ model User {
   login         String   @unique
   password_hash String
   created_at    DateTime @default(now())
+
+  @@map("users")
 }
 
 model Address {

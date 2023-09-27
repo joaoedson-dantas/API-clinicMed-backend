@@ -28,5 +28,9 @@ export async function register(request: FastifyRequest, reply: FastifyReply) {
 
 // controller vai chamar o caso de uso
 // Caso de uso vai ter a parte lógica, a parte da funcionalidade em sí.
+// repostory vai intecptar qualquer operação que precisa ser feita ao db, é a conexão com o banco
 
-/*  1 - Requisisão HTTP 2 -> Controller(HTTP) -> Caso de uso(Regra de negócio)  */
+/*  1 - Requisisão HTTP 2 -> Controller(HTTP) -> 3 -> Caso de uso(Regra de negócio)  
+    4 - Vai chamar um repostory 
+
+*/
