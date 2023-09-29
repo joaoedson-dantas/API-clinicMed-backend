@@ -19,5 +19,3 @@ export class PrismaUsersRepository implements UsersRepository {
     return user
   }
 }
-
-// Uma classe, e para trabalhar com o método create é necessário instaciar a classe

@@ -38,5 +38,3 @@ export class RegisterUsersUseCase {
     return { user }
   }
 }
-
-// controller vai chamar o caso de uso
