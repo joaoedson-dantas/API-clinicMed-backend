@@ -1,15 +1,20 @@
-import { expect, describe, it } from 'vitest'
+import { expect, describe, it, beforeEach } from 'vitest'
 import { RegisterUsersUseCase } from './register-user'
 import { compare } from 'bcryptjs'
 import { InMemoryUserRepository } from '@/repositories/in-memory/in-memory-users-repository'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
-describe('Register Use Case', () => {
-  it('should be able to register', async () => {
-    const inMemoryUserRepository = new InMemoryUserRepository()
-    const registerUserUseCase = new RegisterUsersUseCase(inMemoryUserRepository)
+let usersRepository: InMemoryUserRepository
+let sut: RegisterUsersUseCase
 
-    const { user } = await registerUserUseCase.execute({
+describe('Register Use Case', () => {
+  beforeEach(() => {
+    usersRepository = new InMemoryUserRepository()
+    sut = new RegisterUsersUseCase(usersRepository)
+  })
+
+  it('should be able to register', async () => {
+    const { user } = await sut.execute({
       login: 'leia',
       name: 'leia',
       password: '123456',
@@ -19,10 +24,7 @@ describe('Register Use Case', () => {
   })
 
   it('should hash user password upon registration', async () => {
-    const inMemoryUserRepository = new InMemoryUserRepository()
-    const registerUserUseCase = new RegisterUsersUseCase(inMemoryUserRepository)
-
-    const { user } = await registerUserUseCase.execute({
+    const { user } = await sut.execute({
       login: 'leia',
       name: 'leia',
       password: '123456',
@@ -36,19 +38,16 @@ describe('Register Use Case', () => {
   })
 
   it('should not be able to register with same login twice', async () => {
-    const inMemoryUserRepository = new InMemoryUserRepository()
-    const registerUserUseCase = new RegisterUsersUseCase(inMemoryUserRepository)
-
     const login = 'leia'
 
-    await registerUserUseCase.execute({
+    await sut.execute({
       login,
       name: 'leia',
       password: '123456',
     })
 
     await expect(() =>
-      registerUserUseCase.execute({
+      sut.execute({
         login,
         name: 'leia',
         password: '123456',
