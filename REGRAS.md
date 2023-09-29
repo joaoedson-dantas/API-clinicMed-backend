@@ -6,7 +6,8 @@ ClinicMed
 ## RFs (Requisitos funcionais) 
 
 - [x] Deve ser possível cadastrar um usuário
-- [ ] Deve se autenticar
+- [x] Deve se autenticar
+- [ ] Deve ser possível visualizar o perfil do usuário cadastrado
 
 ### Medicos
 - [ ] Deve ser possível cadastrar um médico
