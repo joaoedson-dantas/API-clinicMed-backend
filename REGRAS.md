@@ -7,7 +7,7 @@ ClinicMed
 
 - [x] Deve ser possível cadastrar um usuário
 - [x] Deve se autenticar
-- [ ] Deve ser possível visualizar o perfil do usuário cadastrado
+- [x] Deve ser possível visualizar o perfil do usuário cadastrado
 
 ### Medicos
 - [ ] Deve ser possível cadastrar um médico
