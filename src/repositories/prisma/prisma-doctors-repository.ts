@@ -1,11 +1,23 @@
-import { Prisma } from '@prisma/client'
 import { DoctorRepository } from '../doctor-repository'
 import { prisma } from '@/lib/prisma'
+import { Doctor } from '@/models/Doctor'
 
 export class PrismaDoctorRepository implements DoctorRepository {
-  async create(data: Prisma.DoctorCreateInput) {
+  async create(data: Doctor) {
+    const address = await prisma.address.findUnique({
+      where: {
+        id: data.addressId,
+      },
+    })
     const doctor = await prisma.doctor.create({
-      data,
+      data: {
+        address: {
+          connect: {
+            id: data.addressId,
+          },
+        },
+        ...data,
+      },
     })
     return doctor
   }

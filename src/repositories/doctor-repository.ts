@@ -1,6 +1,6 @@
-import { Doctor, Prisma } from '@prisma/client'
+import { Doctor } from '@/models/Doctor'
 
 export interface DoctorRepository {
-  create(data: Prisma.DoctorCreateInput): Promise<Doctor>
+  create(data: Doctor): Promise<Doctor>
   findByCrm(crm: string): Promise<Doctor | null>
 }

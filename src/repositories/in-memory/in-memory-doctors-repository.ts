@@ -1,16 +1,26 @@
-import { Doctor, Prisma } from '@prisma/client'
 import { DoctorRepository } from '../doctor-repository'
 import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists-error'
+import { Doctor } from '@/models/Doctor'
+import { randomUUID } from 'crypto'
 
 export class InMemoryDoctorRepository implements DoctorRepository {
   public doctors: Doctor[] = []
 
-  async create(data: Prisma.DoctorCreateInput) {
-    const doctor = {
-      ...data,
+  async create(data: Doctor) {
+    const { activated, crm, email, name, specialty, tel, addressId } = data
+
+    const doctor: Doctor = {
+      activated,
+      crm,
+      email,
+      name,
+      specialty,
+      id: randomUUID(),
+      tel,
+      addressId,
     }
 
-    this.doctors.push(doctor)
+    this.doctors.push()
     return doctor
   }
 
