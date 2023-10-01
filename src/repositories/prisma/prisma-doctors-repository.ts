@@ -4,19 +4,14 @@ import { Doctor } from '@/models/Doctor'
 
 export class PrismaDoctorRepository implements DoctorRepository {
   async create(data: Doctor) {
-    const address = await prisma.address.findUnique({
-      where: {
-        id: data.addressId,
-      },
-    })
+    const { addressId, ...rest } = data
+
     const doctor = await prisma.doctor.create({
       data: {
+        ...rest,
         address: {
-          connect: {
-            id: data.addressId,
-          },
+          connect: { id: addressId },
         },
-        ...data,
       },
     })
     return doctor

@@ -24,7 +24,6 @@ model Address {
   id         String    @id @default(uuid())
   road       String
   district   String
-  cep        String
   zip_code   String
   complement String?
   number     String?
