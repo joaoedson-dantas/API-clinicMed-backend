@@ -1,6 +1,7 @@
 import { DoctorRepository } from '@/repositories/doctor-repository'
-import { Doctor } from '@prisma/client'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
+import { AddressRepository } from '@/repositories/address-repository'
+import { Doctor } from '@/models/Doctor'
 
 interface RegisterDoctorUseCaseResqust {
   name: string
@@ -26,7 +27,10 @@ interface RegisterDoctorUseCaseResponse {
 }
 
 export class RegisterDoctorUseCase {
-  constructor(private doctorsRepository: DoctorRepository) {}
+  constructor(
+    private doctorsRepository: DoctorRepository,
+    private addressRepository: AddressRepository,
+  ) {}
 
   async execute({
     name,
@@ -42,6 +46,9 @@ export class RegisterDoctorUseCase {
     if (doctorWithSameCrm) {
       throw new UserAlreadyExistsError()
     }
+
+    const createdAdrress = await this.addressRepository.create(address)
+
     const doctor = await this.doctorsRepository.create({
       name,
       email,
@@ -49,11 +56,7 @@ export class RegisterDoctorUseCase {
       crm,
       specialty,
       activated,
-      address: {
-        create: {
-          ...address,
-        },
-      },
+      addressId: createdAdrress.id,
     })
 
     return { doctor }
