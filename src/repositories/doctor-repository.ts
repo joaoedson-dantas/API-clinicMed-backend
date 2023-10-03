@@ -4,4 +4,5 @@ export interface DoctorRepository {
   create(data: Omit<Doctor, 'id'>): Promise<Doctor>
   findByCrm(crm: string): Promise<Doctor | null>
   findByEmail(email: string): Promise<Doctor | null>
+  findManyDoctors(page: number): Promise<Doctor[]>
 }

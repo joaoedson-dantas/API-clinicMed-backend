@@ -1,10 +1,9 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-/* import { compare } from 'bcryptjs'
-import { UserAlreadyExistsError } from './errors/user-already-exists-error' */
+
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 import { RegisterDoctorUseCase } from './register-doctor'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
-import { randomUUID } from 'crypto'
+
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 
 let doctorsRepository: InMemoryDoctorRepository

@@ -10,7 +10,7 @@ ClinicMed
 - [x] Deve ser possível visualizar o perfil do usuário cadastrado
 
 ### Medicos
-- [x] Deve ser possível cadastrar um médico
+- [x] Deve ser possível cadastrar um médico com endereço
   ->      Nome
           E-mail
           Telefone
@@ -46,11 +46,11 @@ ClinicMed
 
 ## RNs (Regras de negócio) 
 
-- [ ] O usuário não poderá se cadastrar com um Login já utilizado
+- [x] O usuário não poderá se cadastrar com um Login já utilizado
 
 
-- [ ] Para cadastro de médicos todos os campos devem ser obrigatórios, exceto número e complemento do endereço;
-- [ ] Não é permitido a mudança do e-mail, CRM, e especialidade do médico;
+- [x] Para cadastro de médicos todos os campos devem ser obrigatórios, exceto número e complemento do endereço;
+- [x] Não é permitido a mudança do e-mail, CRM, e especialidade do médico;
 - [ ] A exclusão do médico não deve apagar os dados do médico, mas sim torná-lo 'inativo' no sistema. 
 
 
@@ -75,7 +75,7 @@ ClinicMed
 
 ## RNFs (Requisitos não funcionais)
 - [x] A senha do usuário deve está criptografada;
-- [ ] Os dados devem está persistidos em um banco dados PostgreSQL
+- [x] Os dados devem está persistidos em um banco dados PostgreSQL
 - [ ] O usuário deve ser indentificado por um JWT
 
 - [ ] A listagem de médicos deverá trazer apenas 10 registros por página;

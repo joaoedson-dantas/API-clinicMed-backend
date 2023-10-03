@@ -3,6 +3,17 @@ import { prisma } from '@/lib/prisma'
 import { Doctor } from '@/models/Doctor'
 
 export class PrismaDoctorRepository implements DoctorRepository {
+  async findManyDoctors(page: number): Promise<Doctor[]> {
+    const doctors = await prisma.doctor.findMany({
+      orderBy: {
+        name: 'asc',
+      },
+      take: 10,
+      skip: (page - 1) * 10,
+    })
+    return doctors
+  }
+
   async create(data: Doctor) {
     const { addressId, ...rest } = data
 
