@@ -1,5 +1,4 @@
 import { DoctorRepository } from '../doctor-repository'
-import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists-error'
 import { Doctor } from '@/models/Doctor'
 import { randomUUID } from 'crypto'
 
@@ -9,25 +8,33 @@ export class InMemoryDoctorRepository implements DoctorRepository {
   async create(data: Doctor) {
     const { activated, crm, email, name, specialty, tel, addressId } = data
 
-    const doctor: Doctor = {
+    const doctor = {
+      id: randomUUID(),
       activated,
       crm,
       email,
       name,
       specialty,
-      id: randomUUID(),
       tel,
       addressId,
     }
+    this.doctors.push(doctor)
 
-    this.doctors.push()
     return doctor
   }
 
   async findByCrm(crm: string) {
-    const doctor = await this.doctors.find((item) => item.crm === crm)
+    const doctor = this.doctors.find((item) => item.crm === crm) || null
     if (!doctor) {
-      throw new UserAlreadyExistsError()
+      return null
+    }
+    return doctor
+  }
+
+  async findByEmail(email: string) {
+    const doctor = this.doctors.find((item) => item.email === email) || null
+    if (!doctor) {
+      return null
     }
     return doctor
   }

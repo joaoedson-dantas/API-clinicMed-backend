@@ -25,4 +25,13 @@ export class PrismaDoctorRepository implements DoctorRepository {
     })
     return doctor
   }
+
+  async findByEmail(email: string) {
+    const doctor = await prisma.doctor.findUnique({
+      where: {
+        email,
+      },
+    })
+    return doctor
+  }
 }

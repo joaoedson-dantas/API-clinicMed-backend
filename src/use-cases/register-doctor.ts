@@ -12,7 +12,6 @@ interface RegisterDoctorUseCaseResqust {
   address: {
     road: string
     district: string
-    cep: string
     zip_code: string
     complement: string
     number: string
@@ -42,8 +41,13 @@ export class RegisterDoctorUseCase {
     activated,
   }: RegisterDoctorUseCaseResqust): Promise<RegisterDoctorUseCaseResponse> {
     const doctorWithSameCrm = await this.doctorsRepository.findByCrm(crm)
+    const doctorWithSameEmail = await this.doctorsRepository.findByEmail(email)
 
     if (doctorWithSameCrm) {
+      throw new UserAlreadyExistsError()
+    }
+
+    if (doctorWithSameEmail) {
       throw new UserAlreadyExistsError()
     }
 

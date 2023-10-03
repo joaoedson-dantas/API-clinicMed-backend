@@ -1,6 +1,6 @@
-import { Address, Prisma } from '@prisma/client'
+import { Address } from '@/models/Address'
 
 export interface AddressRepository {
-  create(data: Prisma.AddressCreateInput): Promise<Address>
-  getByAddress(addressId: string): Promise<Address | null>
+  create(data: Omit<Address, 'id'>): Promise<Address>
+  getAddressById(id: string): Promise<Address | null>
 }

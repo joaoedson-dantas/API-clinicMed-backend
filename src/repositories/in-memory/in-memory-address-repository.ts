@@ -1,28 +1,28 @@
-import { Address, Prisma } from '@prisma/client'
+import { Address } from '@/models/Address'
 import { AddressRepository } from '../address-repository'
+import { randomUUID } from 'crypto'
 
 export class InMemoryAddressRepository implements AddressRepository {
   public items: Address[] = []
-  async create(data: Prisma.AddressCreateInput) {
+  async create(data: Address) {
+    const { city, district, road, uf, zip_code, complement, number } = data
     const address = {
-      id: 'address-01',
-      road: data.road,
-      district: data.district,
-      cep: data.cep,
-      zip_code: data.zip_code,
-      complement: null,
-      number: null,
-      uf: data.cep,
-      city: data.city,
+      id: randomUUID(),
+      city,
+      district,
+      road,
+      uf,
+      zip_code,
+      complement,
+      number,
     }
-
     this.items.push(address)
 
     return address
   }
 
-  async getByAddress(addressId: string) {
-    const address = this.items.find((item) => item.id === addressId)
+  async getAddressById(id: string) {
+    const address = this.items.find((item) => item.id === id)
 
     if (!address) {
       return null

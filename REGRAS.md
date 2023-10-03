@@ -10,7 +10,7 @@ ClinicMed
 - [x] Deve ser possível visualizar o perfil do usuário cadastrado
 
 ### Medicos
-- [ ] Deve ser possível cadastrar um médico
+- [x] Deve ser possível cadastrar um médico
   ->      Nome
           E-mail
           Telefone
