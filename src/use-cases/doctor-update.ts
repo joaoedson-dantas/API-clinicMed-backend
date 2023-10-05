@@ -11,8 +11,8 @@ interface DoctorUpdateUseCaseRequest {
     road: string
     district: string
     zip_code: string
-    complement: string
-    number: string
+    complement?: string
+    number?: string
     uf: string
     city: string
   }
