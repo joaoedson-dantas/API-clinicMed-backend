@@ -13,9 +13,8 @@ export class InMemoryAddressRepository implements AddressRepository {
         return { id, ...dataUpdated }
       }
     })
-    const address = this.items.find((address) => address.id === id)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return address!
+
+    return { ...data }
   }
 
   async create(data: Address) {

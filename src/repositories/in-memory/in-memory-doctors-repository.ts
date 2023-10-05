@@ -15,10 +15,10 @@ export class InMemoryDoctorRepository implements DoctorRepository {
         return { id, ...dataUpdated }
       }
     })
+    // as -> Forçando o TS que não vai retornar Underfinid
+    const doctor = this.doctors.find((doctor) => doctor.id === id) as Doctor
 
-    const doctor = this.doctors.find((doctor) => doctor.id === id)
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return doctor!
+    return doctor
   }
 
   async findById(id: string) {

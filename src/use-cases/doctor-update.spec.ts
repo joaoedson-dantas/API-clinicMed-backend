@@ -47,7 +47,6 @@ describe('Register Use Case', () => {
         zip_code: '504393',
       },
     })
-    console.log(doctorsRepository.findById('12345678'))
 
     expect(doctor.id).toEqual(expect.any(String))
     expect(doctor).toEqual([
