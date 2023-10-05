@@ -19,8 +19,8 @@ ClinicMed
           Endereço completo (logradouro, número, complemento, bairro, cidade, UF e CEP);
 
 - [x] Deve ser possível listar os médicos cadastrados;
-- [ ] Deve ser possível atualizar os dados cadastrais dos médicos;
-- [ ] Deve ser possível a exclusão de médicos.
+- [x] Deve ser possível atualizar os dados cadastrais dos médicos;
+- [x] Deve ser possível a exclusão de médicos.
 
 ### Pacientes
 - [ ] Deve ser possível cadastrar um paciente
@@ -51,7 +51,7 @@ ClinicMed
 
 - [x] Para cadastro de médicos todos os campos devem ser obrigatórios, exceto número e complemento do endereço;
 - [x] Não é permitido a mudança do e-mail, CRM, e especialidade do médico;
-- [ ] A exclusão do médico não deve apagar os dados do médico, mas sim torná-lo 'inativo' no sistema. 
+- [x] A exclusão do médico não deve apagar os dados do médico, mas sim torná-lo 'inativo' no sistema. 
 
 
 - [ ] Para cadastro de pacientes todos os campos devem ser obrigatórios, exceto número e complemento do endereço;
@@ -78,8 +78,8 @@ ClinicMed
 - [x] Os dados devem está persistidos em um banco dados PostgreSQL
 - [ ] O usuário deve ser indentificado por um JWT
 
-- [ ] A listagem de médicos deverá trazer apenas 10 registros por página;
-- [ ] A listagem deverá ser ordenada pelo nome do médico, de maneira crescente;
+- [x] A listagem de médicos deverá trazer apenas 10 registros por página;
+- [x] A listagem deverá ser ordenada pelo nome do médico, de maneira crescente;
 
 
 - [ ] A listagem de pacientes deverá trazer apenas 10 registros por página;

@@ -35,6 +35,9 @@ export class PrismaDoctorRepository implements DoctorRepository {
 
   async findManyDoctors(page: number): Promise<Doctor[]> {
     const doctors = await prisma.doctor.findMany({
+      where: {
+        activated: true,
+      },
       orderBy: {
         name: 'asc',
       },
