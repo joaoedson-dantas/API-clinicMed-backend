@@ -1,8 +1,6 @@
 import { describe, it, beforeEach, expect } from 'vitest'
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
-
 import { GetListDoctorsUseCase } from './ get-list-doctors'
-import { randomUUID } from 'crypto'
 
 let doctorsRepository: InMemoryDoctorRepository
 

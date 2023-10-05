@@ -29,9 +29,7 @@ export class ExclusionOfDoctorsUseCase {
       throw new ResouceNotFoundError()
     }
 
-    const inactiveDoctor = { ...doctorExists, activated: false }
-
-    const doctor = await this.doctorsRepository.update(inactiveDoctor)
+    const doctor = await this.doctorsRepository.inactivate(id)
 
     return { doctor }
   }

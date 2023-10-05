@@ -5,6 +5,7 @@ export interface DoctorRepository {
   update(
     data: Omit<Doctor, 'email' | 'crm' | 'specialty' | 'activated'>,
   ): Promise<Doctor>
+  inactivate(id: string): Promise<Doctor>
   findByCrm(crm: string): Promise<Doctor | null>
   findByEmail(email: string): Promise<Doctor | null>
   findById(id: string): Promise<Doctor | null>
