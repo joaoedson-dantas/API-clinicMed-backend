@@ -21,7 +21,7 @@ describe('Register Use Case', () => {
     const { doctor } = await sut.execute({
       name: 'Leia',
       email: 'leialb28@gmail.com',
-      activated: 1,
+      activated: true,
       crm: '5432',
       specialty: 'ortopedia',
       tel: '85992002329',
@@ -59,7 +59,7 @@ describe('Register Use Case', () => {
     await sut.execute({
       name: 'Leia',
       email: 'leialb28@gmail.com',
-      activated: 1,
+      activated: true,
       crm,
       specialty: 'ortopedia',
       tel: '85992002329',
@@ -78,7 +78,7 @@ describe('Register Use Case', () => {
       sut.execute({
         name: 'Leia',
         email: 'leialb28@gmail.com',
-        activated: 1,
+        activated: true,
         crm,
         specialty: 'ortopedia',
         tel: '85992002329',
@@ -101,7 +101,7 @@ describe('Register Use Case', () => {
     await sut.execute({
       name: 'Leia',
       email,
-      activated: 1,
+      activated: true,
       crm: '1234',
       specialty: 'ortopedia',
       tel: '85992002329',
@@ -120,7 +120,7 @@ describe('Register Use Case', () => {
       sut.execute({
         name: 'Leia',
         email,
-        activated: 1,
+        activated: true,
         crm: '3232',
         specialty: 'ortopedia',
         tel: '85992002329',

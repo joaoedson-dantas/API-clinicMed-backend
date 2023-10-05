@@ -15,10 +15,9 @@ describe('Get list doctors use case', () => {
 
     for (let i = 0; i < 27; i++) {
       await doctorsRepository.create({
-        id: randomUUID(),
         name: `${i}`,
         email: `leialb2${i}@gmail.com`,
-        activated: 1,
+        activated: true,
         crm: `4362${i}`,
         specialty: 'ortopedia',
         tel: '85992002329',
@@ -27,10 +26,9 @@ describe('Get list doctors use case', () => {
     }
 
     await doctorsRepository.create({
-      id: randomUUID(),
       name: 'xavier',
       email: `xavier$@gmail.com`,
-      activated: 1,
+      activated: true,
       crm: `4362$`,
       specialty: 'ortopedia',
       tel: '85992002329',
@@ -38,10 +36,9 @@ describe('Get list doctors use case', () => {
     })
 
     await doctorsRepository.create({
-      id: randomUUID(),
       name: 'zelia',
       email: `zelia$@gmail.com`,
-      activated: 1,
+      activated: true,
       crm: `4362$`,
       specialty: 'ortopedia',
       tel: '85992002329',
@@ -49,10 +46,9 @@ describe('Get list doctors use case', () => {
     })
 
     await doctorsRepository.create({
-      id: randomUUID(),
       name: 'ana clara',
       email: `zelia$@gmail.com`,
-      activated: 1,
+      activated: true,
       crm: `4362$`,
       specialty: 'ortopedia',
       tel: '85992002329',

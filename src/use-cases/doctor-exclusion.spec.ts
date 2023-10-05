@@ -2,20 +2,20 @@ import { expect, describe, it, beforeEach } from 'vitest'
 
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
-import { DoctorUpdateUseCase } from './doctor-update'
-import { ResouceNotFoundError } from './errors/resource-not-found-error'
+
+import { ExclusionOfDoctorsUseCase } from './doctor-exclusion'
 
 let doctorsRepository: InMemoryDoctorRepository
 let addressRepository: InMemoryAddressRepository
-let sut: DoctorUpdateUseCase
+let sut: ExclusionOfDoctorsUseCase
 let doctorId: string
-let addressId: string
+let activated: boolean
 
 describe('Register Use Case', () => {
   beforeEach(async () => {
     doctorsRepository = new InMemoryDoctorRepository()
     addressRepository = new InMemoryAddressRepository()
-    sut = new DoctorUpdateUseCase(doctorsRepository, addressRepository)
+    sut = new ExclusionOfDoctorsUseCase(doctorsRepository)
 
     const address = await addressRepository.create({
       city: 'Fortaleza',
@@ -36,29 +36,24 @@ describe('Register Use Case', () => {
     })
 
     doctorId = doctor.id
-    addressId = address.id
+    activated = doctor.activated
   })
 
-  it('should be possible to edit a doctor already registered', async () => {
+  it('should be possible to leave a doctor inactive', async () => {
     const { doctor } = await sut.execute({
       id: doctorId,
-      name: 'Leia Bernarndo Dantas',
-      address: {
-        city: 'Enrunepé',
-        district: 'Sção José',
-        road: 'Rua da leia',
-        uf: 'AM',
-        zip_code: '504393',
-      },
+      activated,
     })
 
-    expect(doctor.addressId).toEqual(addressId)
-    expect(doctor).toEqual(
+    console.log(doctor.activated)
+
+    expect(doctor.activated).toBe(false)
+    /*     expect(doctor).toEqual(
       expect.objectContaining({ name: 'Leia Bernarndo Dantas' }),
-    )
+    ) */
   })
 
-  it('it should not be possible to edit a doctor with a non-existent id', async () => {
+  /* it('it should not be possible to edit a doctor with a non-existent id', async () => {
     await expect(
       sut.execute({
         id: 'no-exist-id',
@@ -72,5 +67,5 @@ describe('Register Use Case', () => {
         },
       }),
     ).rejects.toBeInstanceOf(ResouceNotFoundError)
-  })
+  }) */
 })

@@ -18,7 +18,7 @@ interface RegisterDoctorUseCaseResqust {
     uf: string
     city: string
   }
-  activated: number
+  activated: boolean
 }
 
 interface RegisterDoctorUseCaseResponse {

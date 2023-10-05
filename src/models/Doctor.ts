@@ -6,5 +6,5 @@ export interface Doctor {
   crm: string
   specialty: string
   addressId: string
-  activated: number
+  activated: boolean
 }
