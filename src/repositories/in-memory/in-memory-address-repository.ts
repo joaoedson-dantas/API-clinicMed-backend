@@ -17,7 +17,7 @@ export class InMemoryAddressRepository implements AddressRepository {
     return { ...data }
   }
 
-  async create(data: Address) {
+  async create(data: Omit<Address, 'id'>) {
     const { city, district, road, uf, zip_code, complement, number } = data
     const address = {
       id: randomUUID(),
@@ -35,9 +35,8 @@ export class InMemoryAddressRepository implements AddressRepository {
   }
 
   async getAddressById(id: string) {
-    const address = this.items.find((item) => item.id === id)
+    const address = this.items.find((item) => item.id === id) as Address
 
-    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
-    return address!
+    return address
   }
 }

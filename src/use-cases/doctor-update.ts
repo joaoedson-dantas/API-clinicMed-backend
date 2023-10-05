@@ -62,6 +62,7 @@ export class DoctorUpdateUseCase {
       specialty: doctorToBeUpdated.specialty,
       addressId,
     }
+
     const doctor = await this.doctorsRepository.update(doctorUpdated)
 
     return { doctor }

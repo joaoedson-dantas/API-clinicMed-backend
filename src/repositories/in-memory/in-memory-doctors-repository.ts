@@ -10,11 +10,13 @@ export class InMemoryDoctorRepository implements DoctorRepository {
   ) {
     const { id, ...dataUpdated } = data
 
-    this.doctors.forEach((doctor) => {
+    this.doctors.forEach((doctor, index) => {
       if (doctor.id === id) {
-        return { id, ...dataUpdated }
+        this.doctors[index] = { ...doctor, ...dataUpdated }
       }
+      return doctor
     })
+
     // as -> Forçando o TS que não vai retornar Underfinid
     const doctor = this.doctors.find((doctor) => doctor.id === id) as Doctor
 
@@ -47,9 +49,10 @@ export class InMemoryDoctorRepository implements DoctorRepository {
         return 0
       })
       .slice((page - 1) * 10, page * 10)
+      .filter((doctor) => doctor.activated)
   }
 
-  async create(data: Doctor) {
+  async create(data: Omit<Doctor, 'id'>) {
     const { activated, crm, email, name, specialty, tel, addressId } = data
 
     const doctor = {
