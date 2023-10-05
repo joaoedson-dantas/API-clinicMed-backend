@@ -39,7 +39,7 @@ export class RegisterPatientUseCase {
     address,
   }: RegisterPatientUseCaseRequest): Promise<RegisterPatientUseCaseResponse> {
     // verificando se já existe um paciente com cpf, e email já cadastrado no db
-    const patientWithSameCpf = await this.patientsRepository.findByEmail(email)
+    const patientWithSameCpf = await this.patientsRepository.findByCPF(cpf)
     const patientWithSameEmail =
       await this.patientsRepository.findByEmail(email)
 
