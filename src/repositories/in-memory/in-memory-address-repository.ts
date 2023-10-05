@@ -4,6 +4,20 @@ import { randomUUID } from 'crypto'
 
 export class InMemoryAddressRepository implements AddressRepository {
   public items: Address[] = []
+
+  async update(data: Address) {
+    const { id, ...dataUpdated } = data
+
+    this.items.forEach((item) => {
+      if (item.id === id) {
+        return { id, ...dataUpdated }
+      }
+    })
+    const address = this.items.find((address) => address.id === id)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return address!
+  }
+
   async create(data: Address) {
     const { city, district, road, uf, zip_code, complement, number } = data
     const address = {
@@ -24,9 +38,7 @@ export class InMemoryAddressRepository implements AddressRepository {
   async getAddressById(id: string) {
     const address = this.items.find((item) => item.id === id)
 
-    if (!address) {
-      return null
-    }
-    return address
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return address!
   }
 }

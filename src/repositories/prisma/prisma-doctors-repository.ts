@@ -3,6 +3,27 @@ import { prisma } from '@/lib/prisma'
 import { Doctor } from '@/models/Doctor'
 
 export class PrismaDoctorRepository implements DoctorRepository {
+  async update(
+    data: Omit<Doctor, 'email' | 'crm' | 'specialty' | 'activated'>,
+  ) {
+    const { id, ...dataUpdated } = data
+
+    const updatedDoctor = prisma.doctor.update({
+      where: { id },
+      data: dataUpdated,
+    })
+    return updatedDoctor
+  }
+
+  async findById(id: string): Promise<Doctor | null> {
+    const doctor = await prisma.doctor.findUnique({
+      where: {
+        id,
+      },
+    })
+    return doctor
+  }
+
   async findManyDoctors(page: number): Promise<Doctor[]> {
     const doctors = await prisma.doctor.findMany({
       orderBy: {

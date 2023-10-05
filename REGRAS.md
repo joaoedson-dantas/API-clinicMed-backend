@@ -18,7 +18,7 @@ ClinicMed
           Especialidade (Ortopedia, Cardiologia, Ginecologia ou Dermatologia)
           Endereço completo (logradouro, número, complemento, bairro, cidade, UF e CEP);
 
-- [ ] Deve ser possível listar os médicos cadastrados;
+- [x] Deve ser possível listar os médicos cadastrados;
 - [ ] Deve ser possível atualizar os dados cadastrais dos médicos;
 - [ ] Deve ser possível a exclusão de médicos.
 

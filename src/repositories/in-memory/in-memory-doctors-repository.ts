@@ -5,6 +5,31 @@ import { randomUUID } from 'crypto'
 export class InMemoryDoctorRepository implements DoctorRepository {
   public doctors: Doctor[] = []
 
+  async update(
+    data: Omit<Doctor, 'email' | 'crm' | 'specialty' | 'activated'>,
+  ) {
+    const { id, ...dataUpdated } = data
+
+    this.doctors.forEach((doctor) => {
+      if (doctor.id === id) {
+        return { id, ...dataUpdated }
+      }
+    })
+
+    const doctor = this.doctors.find((doctor) => doctor.id === id)
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+    return doctor!
+  }
+
+  async findById(id: string) {
+    const doctor = this.doctors.find((item) => item.id === id)
+
+    if (!doctor) {
+      return null
+    }
+    return doctor
+  }
+
   async findManyDoctors(page: number) {
     return this.doctors
       .sort((a, b) => {
