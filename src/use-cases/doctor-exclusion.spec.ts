@@ -4,6 +4,7 @@ import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doc
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
 
 import { ExclusionOfDoctorsUseCase } from './doctor-exclusion'
+import { ResouceNotFoundError } from './errors/resource-not-found-error'
 
 let doctorsRepository: InMemoryDoctorRepository
 let addressRepository: InMemoryAddressRepository
@@ -11,7 +12,7 @@ let sut: ExclusionOfDoctorsUseCase
 let doctorId: string
 let activated: boolean
 
-describe('Register Use Case', () => {
+describe('Doctor exlusion use case', () => {
   beforeEach(async () => {
     doctorsRepository = new InMemoryDoctorRepository()
     addressRepository = new InMemoryAddressRepository()
@@ -53,19 +54,21 @@ describe('Register Use Case', () => {
     ) */
   })
 
-  /* it('it should not be possible to edit a doctor with a non-existent id', async () => {
+  it('should not be possible to inactivate a doctor without an ID', async () => {
     await expect(
       sut.execute({
         id: 'no-exist-id',
-        name: 'Leia Bernarndo Dantas',
-        address: {
-          city: 'Enrunepé',
-          district: 'Sção José',
-          road: 'Rua da leia',
-          uf: 'AM',
-          zip_code: '504393',
-        },
+        activated,
       }),
     ).rejects.toBeInstanceOf(ResouceNotFoundError)
-  }) */
+  })
+
+  it('should not be possible to inactivate a doctor who is already inactive', async () => {
+    await expect(
+      sut.execute({
+        id: 'no-exist-id',
+        activated: false,
+      }),
+    ).rejects.toBeInstanceOf(ResouceNotFoundError)
+  })
 })
