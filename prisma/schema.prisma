@@ -44,7 +44,7 @@ model Doctor {
   specialty String
   address   Address @relation(fields: [addressId], references: [id])
   addressId String
-  activated Int
+  activated Boolean @default(false)
   querys    Query[]
 
   @@map("doctors")
@@ -58,7 +58,7 @@ model Patient {
   cpf        String   @unique
   address    Address  @relation(fields: [addressId], references: [id])
   addressId  String
-  activated  Int
+  activated  Boolean  @default(false)
   created_at DateTime @default(now())
   querys     Query[]
 
