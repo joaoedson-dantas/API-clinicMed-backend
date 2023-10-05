@@ -1,6 +1,4 @@
 import { expect, describe, it, beforeEach } from 'vitest'
-
-import { RegisterDoctorUseCase } from './register-doctor'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
 
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
