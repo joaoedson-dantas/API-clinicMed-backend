@@ -32,7 +32,7 @@ ClinicMed
 
 - [x] Deve ser possível listar os pacientes cadastrados;
 - [x] Deve ser possível atualizar os dados cadastrais dos pacientes;
-- [ ] Deve ser possível a exclusão de pacientes.
+- [x] Deve ser possível a exclusão de pacientes.
 
 ### Consultas
 - [ ] O sistema deve permitir um agendamento de consulta;
@@ -82,5 +82,5 @@ ClinicMed
 - [x] A listagem deverá ser ordenada pelo nome do médico, de maneira crescente;
 
 
-- [ ] A listagem de pacientes deverá trazer apenas 10 registros por página;
-- [ ] A listagem deverá ser ordenada pelo nome do paciente, de maneira crescente;
+- [x] A listagem de pacientes deverá trazer apenas 10 registros por página;
+- [x] A listagem deverá ser ordenada pelo nome do paciente, de maneira crescente;
