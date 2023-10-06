@@ -44,7 +44,7 @@ describe('Register Use Case', () => {
       tel: '85991711082',
       address: {
         city: 'Enrunepé',
-        district: 'Sção José',
+        district: 'São José',
         road: 'Rua da leia',
         uf: 'AM',
         zip_code: '504393',

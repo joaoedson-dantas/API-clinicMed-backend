@@ -11,12 +11,5 @@ export interface PatientRepository {
 
   update(data: Omit<Patient, 'email' | 'cpf' | 'activated'>): Promise<Patient>
 
-  /*   update(
-    data: Omit<Patient, 'email' | 'crm' | 'specialty' | 'activated'>,
-  ): Promise<Doctor>
-  inactivate(id: string): Promise<Doctor>
-  findByCrm(crm: string): Promise<Doctor | null>
-  findByEmail(email: string): Promise<Doctor | null>
-  findById(id: string): Promise<Doctor | null>
-  findManyDoctors(page: number): Promise<Doctor[]> */
+  inactivate(id: string): Promise<Patient>
 }

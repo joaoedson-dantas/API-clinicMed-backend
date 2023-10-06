@@ -5,6 +5,16 @@ import { randomUUID } from 'crypto'
 export class InMemoryPatientRepository implements PatientRepository {
   public patients: Patient[] = []
 
+  async inactivate(idPatient: string) {
+    const patient = (await this.findById(idPatient)) as Patient
+
+    const updatedPatient = { ...patient, activated: false }
+
+    await this.update(updatedPatient)
+
+    return updatedPatient
+  }
+
   async update(data: Omit<Patient, 'email' | 'activated' | 'cpf'>) {
     const { id, ...dataUpdated } = data
     this.patients.forEach((patient, index) => {
