@@ -56,7 +56,7 @@ describe('Get list doctors use case', () => {
 
   it('should be able to get 10 doctors per page', async () => {
     const { doctorsOrder } = await sut.execute({ page: 3 })
-
+    console.log(doctorsOrder)
     expect(doctorsOrder).toHaveLength(10)
     expect(doctorsOrder[doctorsOrder.length - 1]).toEqual(
       expect.objectContaining({

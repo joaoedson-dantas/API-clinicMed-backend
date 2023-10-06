@@ -9,5 +9,9 @@ export interface DoctorRepository {
   findByCrm(crm: string): Promise<Doctor | null>
   findByEmail(email: string): Promise<Doctor | null>
   findById(id: string): Promise<Doctor | null>
-  findManyDoctors(page: number): Promise<Doctor[]>
+  findManyDoctorsActived(
+    page: number,
+  ): Promise<
+    Array<Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty'>>
+  >
 }

@@ -42,7 +42,7 @@ export class InMemoryDoctorRepository implements DoctorRepository {
     return doctor
   }
 
-  async findManyDoctors(page: number) {
+  async findManyDoctorsActived(page: number) {
     return this.doctors
       .sort((a, b) => {
         const nameA = a.name.toUpperCase() // Converta para maiúsculas para garantir a ordenação correta
@@ -60,6 +60,13 @@ export class InMemoryDoctorRepository implements DoctorRepository {
       })
       .slice((page - 1) * 10, page * 10)
       .filter((doctor) => doctor.activated)
+      .map((doctor) => ({
+        name: doctor.name,
+        email: doctor.email,
+        crm: doctor.crm,
+        specialty: doctor.specialty,
+        activated: doctor.activated,
+      }))
   }
 
   async create(data: Omit<Doctor, 'id'>) {

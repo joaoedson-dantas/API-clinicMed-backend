@@ -6,7 +6,9 @@ interface GetListDoctorsUseCaseRequest {
 }
 
 interface GetListDoctorsUseCaseResponse {
-  doctorsOrder: Doctor[]
+  doctorsOrder: Array<
+    Pick<Doctor, 'name' | 'email' | 'specialty' | 'crm' | 'activated'>
+  >
 }
 
 export class GetListDoctorsUseCase {
@@ -15,7 +17,8 @@ export class GetListDoctorsUseCase {
   async execute({
     page,
   }: GetListDoctorsUseCaseRequest): Promise<GetListDoctorsUseCaseResponse> {
-    const doctorsOrder = await this.doctorsRepository.findManyDoctors(page)
+    const doctorsOrder =
+      await this.doctorsRepository.findManyDoctorsActived(page)
     return { doctorsOrder }
   }
 }

@@ -33,7 +33,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
     return doctor
   }
 
-  async findManyDoctors(page: number): Promise<Doctor[]> {
+  async findManyDoctorsActived(page: number) {
     const doctors = await prisma.doctor.findMany({
       where: {
         activated: true,
@@ -43,6 +43,13 @@ export class PrismaDoctorRepository implements DoctorRepository {
       },
       take: 10,
       skip: (page - 1) * 10,
+      select: {
+        name: true,
+        email: true,
+        crm: true,
+        specialty: true,
+        activated: true,
+      },
     })
     return doctors
   }
