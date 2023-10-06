@@ -22,4 +22,22 @@ describe('query med Use Case', () => {
 
     expect(query.id).toEqual(expect.any(String))
   })
+
+  it('should not be able to querys in twice in the same day', async () => {
+    await sut.execute({
+      doctorId: 'doctor-01',
+      patientId: 'patient-01',
+      specialty: 'ortopedia',
+      start_time: new Date(),
+    })
+
+    await expect(() =>
+      sut.execute({
+        doctorId: 'doctor-01',
+        patientId: 'patient-01',
+        specialty: 'ortopedia',
+        start_time: new Date(),
+      }),
+    ).rejects.toBeInstanceOf(Error)
+  })
 })

@@ -84,3 +84,5 @@ ClinicMed
 
 - [x] A listagem de pacientes deverá trazer apenas 10 registros por página;
 - [x] A listagem deverá ser ordenada pelo nome do paciente, de maneira crescente;
+
+- test 
