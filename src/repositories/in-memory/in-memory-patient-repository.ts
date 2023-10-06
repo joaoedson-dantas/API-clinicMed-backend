@@ -4,6 +4,7 @@ import { randomUUID } from 'crypto'
 
 export class InMemoryPatientRepository implements PatientRepository {
   public patients: Patient[] = []
+
   async update(data: Omit<Patient, 'email' | 'activated' | 'cpf'>) {
     const { id, ...dataUpdated } = data
     this.patients.forEach((patient, index) => {
@@ -21,7 +22,7 @@ export class InMemoryPatientRepository implements PatientRepository {
     return patient
   }
 
-  async create(data: Patient): Promise<Patient> {
+  async create(data: Patient) {
     const { name, cpf, email, tel, activated, addressId, created_at } = data
 
     const patient = {
@@ -40,7 +41,7 @@ export class InMemoryPatientRepository implements PatientRepository {
     return patient
   }
 
-  async findByEmail(email: string): Promise<Patient | null> {
+  async findByEmail(email: string) {
     const patient = this.patients.find((item) => item.email === email) || null
     if (!patient) {
       return null
@@ -48,7 +49,7 @@ export class InMemoryPatientRepository implements PatientRepository {
     return patient
   }
 
-  async findById(id: string): Promise<Patient | null> {
+  async findById(id: string) {
     const patient = this.patients.find((patient) => patient.id === id)
     if (!patient) {
       return null
@@ -56,7 +57,7 @@ export class InMemoryPatientRepository implements PatientRepository {
     return patient
   }
 
-  async findByCPF(cpf: string): Promise<Patient | null> {
+  async findByCPF(cpf: string) {
     const patient = this.patients.find((item) => item.cpf === cpf) || null
     if (!patient) {
       return null
