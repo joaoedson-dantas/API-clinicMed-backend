@@ -46,12 +46,7 @@ describe('Doctor exlusion use case', () => {
       activated,
     })
 
-    console.log(doctor.activated)
-
     expect(doctor.activated).toBe(false)
-    /*     expect(doctor).toEqual(
-      expect.objectContaining({ name: 'Leia Bernarndo Dantas' }),
-    ) */
   })
 
   it('should not be possible to inactivate a doctor without an ID', async () => {
