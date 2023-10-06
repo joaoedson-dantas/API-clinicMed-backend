@@ -10,7 +10,7 @@ let doctorsRepository: InMemoryDoctorRepository
 let addressRepository: InMemoryAddressRepository
 let sut: RegisterDoctorUseCase
 
-describe('Register Use Case', () => {
+describe('Register Doctor Use Case', () => {
   beforeEach(() => {
     doctorsRepository = new InMemoryDoctorRepository()
     addressRepository = new InMemoryAddressRepository()

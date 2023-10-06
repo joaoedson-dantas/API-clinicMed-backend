@@ -11,7 +11,7 @@ let sut: DoctorUpdateUseCase
 let doctorId: string
 let addressId: string
 
-describe('Register Use Case', () => {
+describe('doctor update use case', () => {
   beforeEach(async () => {
     doctorsRepository = new InMemoryDoctorRepository()
     addressRepository = new InMemoryAddressRepository()

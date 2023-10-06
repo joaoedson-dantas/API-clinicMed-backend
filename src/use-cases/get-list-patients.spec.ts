@@ -7,7 +7,7 @@ let patientsRepository: InMemoryPatientRepository
 
 let sut: GetListPatientsActiveUseCase
 
-describe('Get list doctors use case', () => {
+describe('Get list patients use case', () => {
   beforeEach(async () => {
     patientsRepository = new InMemoryPatientRepository()
     sut = new GetListPatientsActiveUseCase(patientsRepository)

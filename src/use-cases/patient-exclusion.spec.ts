@@ -2,19 +2,19 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
 import { ResouceNotFoundError } from './errors/resource-not-found-error'
 import { InMemoryPatientRepository } from '@/repositories/in-memory/in-memory-patient-repository'
-import { PatientUpdateUseCase } from './patient-update'
+import { ExclusionOfPatientUseCase } from './patient-exclusion'
 
 let patientsRepository: InMemoryPatientRepository
 let addressRepository: InMemoryAddressRepository
-let sut: PatientUpdateUseCase
+let sut: ExclusionOfPatientUseCase
 let patientId: string
-let addressId: string
+let activated: boolean
 
-describe('Patient Update Use Case', () => {
+describe('patient exlusion use case', () => {
   beforeEach(async () => {
     patientsRepository = new InMemoryPatientRepository()
     addressRepository = new InMemoryAddressRepository()
-    sut = new PatientUpdateUseCase(patientsRepository, addressRepository)
+    sut = new ExclusionOfPatientUseCase(patientsRepository)
 
     const address = await addressRepository.create({
       city: 'Fortaleza',
@@ -34,43 +34,34 @@ describe('Patient Update Use Case', () => {
     })
 
     patientId = patient.id
-    addressId = address.id
+    if (typeof patient.activated === 'boolean') {
+      activated = patient.activated
+    }
   })
 
-  it('should be possible to edit a patient already registered', async () => {
+  it('should be possible to leave a patient inactive', async () => {
     const { patient } = await sut.execute({
       id: patientId,
-      name: 'Leia Bernarndo Dantas',
-      tel: '85991711082',
-      address: {
-        city: 'Enrunepé',
-        district: 'São José',
-        road: 'Rua da leia',
-        uf: 'AM',
-        zip_code: '504393',
-      },
+      activated,
     })
 
-    console.log(patient)
-    expect(patient.addressId).toEqual(addressId)
-    expect(patient).toEqual(
-      expect.objectContaining({ name: 'Leia Bernarndo Dantas' }),
-    )
+    expect(patient.activated).toBe(false)
   })
 
-  it('it should not be possible to edit a patient with a non-existent id', async () => {
+  it('should not be possible to inactivate a doctor without an ID', async () => {
     await expect(
       sut.execute({
         id: 'no-exist-id',
-        name: 'Leia Bernarndo Dantas',
-        tel: '8592002328',
-        address: {
-          city: 'Enrunepé',
-          district: 'Sção José',
-          road: 'Rua da leia',
-          uf: 'AM',
-          zip_code: '504393',
-        },
+        activated,
+      }),
+    ).rejects.toBeInstanceOf(ResouceNotFoundError)
+  })
+
+  it('should not be possible to inactivate a doctor who is already inactive', async () => {
+    await expect(
+      sut.execute({
+        id: 'no-exist-id',
+        activated: false,
       }),
     ).rejects.toBeInstanceOf(ResouceNotFoundError)
   })
