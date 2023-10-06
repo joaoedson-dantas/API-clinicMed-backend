@@ -3,6 +3,16 @@ import { PatientRepository } from '../patient-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaPatientrepository implements PatientRepository {
+  async update(data: Omit<Patient, 'email' | 'cpf' | 'activated'>) {
+    const { id, ...dataUpdated } = data
+
+    const patientUpdated = await prisma.patient.update({
+      where: { id },
+      data: dataUpdated,
+    })
+    return patientUpdated
+  }
+
   async findById(id: string) {
     const patient = await prisma.patient.findUnique({
       where: {

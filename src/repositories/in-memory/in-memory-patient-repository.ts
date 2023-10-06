@@ -4,6 +4,22 @@ import { randomUUID } from 'crypto'
 
 export class InMemoryPatientRepository implements PatientRepository {
   public patients: Patient[] = []
+  async update(data: Omit<Patient, 'email' | 'activated' | 'cpf'>) {
+    const { id, ...dataUpdated } = data
+    this.patients.forEach((patient, index) => {
+      if (patient.id === id) {
+        this.patients[index] = { ...patient, ...dataUpdated }
+      }
+      return patient
+    })
+
+    // as -> Forçando o TS que não vai retornar Underfinid
+    const patient = this.patients.find(
+      (patient) => patient.id === id,
+    ) as Patient
+
+    return patient
+  }
 
   async create(data: Patient): Promise<Patient> {
     const { name, cpf, email, tel, activated, addressId, created_at } = data

@@ -17,7 +17,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   ) {
     const { id, ...dataUpdated } = data
 
-    const updatedDoctor = prisma.doctor.update({
+    const updatedDoctor = await prisma.doctor.update({
       where: { id },
       data: dataUpdated,
     })

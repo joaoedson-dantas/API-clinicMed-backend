@@ -8,6 +8,9 @@ export interface PatientRepository {
   findManyActivePatients(
     page: number,
   ): Promise<Array<Pick<Patient, 'name' | 'email' | 'cpf' | 'activated'>>>
+
+  update(data: Omit<Patient, 'email' | 'cpf' | 'activated'>): Promise<Patient>
+
   /*   update(
     data: Omit<Patient, 'email' | 'crm' | 'specialty' | 'activated'>,
   ): Promise<Doctor>
