@@ -58,12 +58,13 @@ ClinicMed
 - [x] Não é permitido a mudança do e-mail e CPF do paciente;
 - [x] A exclusão do paciente não deve apagar os dados do médico, mas sim torná-lo 'inativo' no sistema. 
 
+
 - [ ] O horário de funcionamento da clínica é de segunda a sábado, das 07:00 às 19:00;
 - [ ] As consultas tem duração fixa de 1 hora;
 - [ ] As consultas devem ser agendadas com antecedência mínima de 30 minutos;
 - [ ] Não permitir o agendamento de consultas com pacientes inativos no sistema;
 - [ ] Não permitir o agendamento de consultas com médicos inativos no sistema;
-- [ ] Não permitir o agendamento de mais de uma consulta no mesmo dia para um mesmo paciente;
+- [x] Não permitir o agendamento de mais de uma consulta no mesmo dia para um mesmo paciente;
 - [ ] Não permitir o agendamento de uma consulta com um médico que já possui outra consulta agendada na mesma data/hora;
 - [ ] A escolha do médico é opcional, sendo que nesse caso o sistema deve escolher aleatoriamente algum médico disponível na data/hora preenchida.
 
@@ -85,4 +86,4 @@ ClinicMed
 - [x] A listagem de pacientes deverá trazer apenas 10 registros por página;
 - [x] A listagem deverá ser ordenada pelo nome do paciente, de maneira crescente;
 
-- test 
+- 

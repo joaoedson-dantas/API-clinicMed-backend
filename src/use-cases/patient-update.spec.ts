@@ -51,7 +51,6 @@ describe('Patient Update Use Case', () => {
       },
     })
 
-    console.log(patient)
     expect(patient.addressId).toEqual(addressId)
     expect(patient).toEqual(
       expect.objectContaining({ name: 'Leia Bernarndo Dantas' }),
