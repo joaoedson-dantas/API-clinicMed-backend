@@ -1,8 +1,8 @@
 import { QueryMedRepository } from '@/repositories/query-med-repository'
 import { isConsultationWithinSchedule } from '@/utils/check-clinic-opening-hours'
 import { Query } from '@prisma/client'
-import dayjs from 'dayjs'
-import { ResouceNotFoundError } from './errors/resource-not-found-error'
+
+import { PatientRepository } from '@/repositories/patient-repository'
 
 interface QueryMedUseCaseRequest {
   patientId: string
@@ -16,7 +16,10 @@ interface QueryMedUseCaseResponse {
 }
 
 export class QueryMedUseCase {
-  constructor(private querysMedRepository: QueryMedRepository) {}
+  constructor(
+    private querysMedRepository: QueryMedRepository,
+    private patientsRepository: PatientRepository,
+  ) {}
 
   async execute({
     doctorId,
@@ -30,6 +33,14 @@ export class QueryMedUseCase {
     if (!clinicOpen) {
       throw new Error()
     }
+
+    // verificando se o paciente está inativo no sistema
+    const patient = await this.patientsRepository.findById(patientId)
+
+    if (patient!.activated === false) {
+      throw new Error()
+    }
+
     // verificando se o paciente já tem alguma consulta marcado no dia
     const queryOnSameDate =
       await this.querysMedRepository.findByPatientIdOnDate(

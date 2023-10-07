@@ -59,9 +59,9 @@ ClinicMed
 - [x] A exclusão do paciente não deve apagar os dados do médico, mas sim torná-lo 'inativo' no sistema. 
 
 
-- [ ] O horário de funcionamento da clínica é de segunda a sábado, das 07:00 às 19:00;
-- [ ] As consultas tem duração fixa de 1 hora;
+- [x] O horário de funcionamento da clínica é de segunda a sábado, das 07:00 às 19:00;
 - [ ] As consultas devem ser agendadas com antecedência mínima de 30 minutos;
+- [ ] As consultas tem duração fixa de 1 hora;
 - [ ] Não permitir o agendamento de consultas com pacientes inativos no sistema;
 - [ ] Não permitir o agendamento de consultas com médicos inativos no sistema;
 - [x] Não permitir o agendamento de mais de uma consulta no mesmo dia para um mesmo paciente;
