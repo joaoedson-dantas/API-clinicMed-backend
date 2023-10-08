@@ -5,6 +5,18 @@ import { randomUUID } from 'crypto'
 export class InMemoryDoctorRepository implements DoctorRepository {
   public doctors: Doctor[] = []
 
+  async findManyAllDoctorsActived() {
+    return this.doctors
+      .filter((doctor) => doctor.activated)
+      .map((doctor) => ({
+        name: doctor.name,
+        email: doctor.email,
+        crm: doctor.crm,
+        specialty: doctor.specialty,
+        activated: doctor.activated,
+      }))
+  }
+
   async inactivate(idDoctor: string) {
     const doctor = (await this.findById(idDoctor)) as Doctor
 

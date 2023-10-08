@@ -14,4 +14,8 @@ export interface DoctorRepository {
   ): Promise<
     Array<Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty'>>
   >
+
+  findManyAllDoctorsActived(): Promise<
+    Array<Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty'>>
+  >
 }
