@@ -1,5 +1,3 @@
-import { Query } from '@prisma/client'
-
 export interface Doctor {
   id: string
   name: string
@@ -9,5 +7,5 @@ export interface Doctor {
   specialty: string
   addressId: string
   activated: boolean
-  querys?: Query[]
+  querys?: string[]
 }

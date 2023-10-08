@@ -5,6 +5,19 @@ import { randomUUID } from 'crypto'
 export class InMemoryDoctorRepository implements DoctorRepository {
   public doctors: Doctor[] = []
 
+  async updateDoctorWithQuery(doctorId: string, queryId: string) {
+    const doctor = await this.findById(doctorId)
+
+    if (!doctor) {
+      throw new Error('medico não encontrado')
+    }
+    doctor.querys = doctor.querys || []
+    doctor.querys.push(queryId)
+
+    await this.update(doctor)
+    return doctor
+  }
+
   async findManyAllDoctorsActived() {
     return this.doctors
       .filter((doctor) => doctor.activated)
@@ -14,6 +27,7 @@ export class InMemoryDoctorRepository implements DoctorRepository {
         crm: doctor.crm,
         specialty: doctor.specialty,
         activated: doctor.activated,
+        id: doctor.id,
       }))
   }
 

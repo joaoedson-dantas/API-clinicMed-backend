@@ -1,11 +1,13 @@
 import { QueryMedRepository } from '@/repositories/query-med-repository'
 import { isConsultationWithinSchedule } from '@/utils/check-clinic-opening-hours'
-import { Doctor, Query } from '@prisma/client'
+import { Query } from '@prisma/client'
 
 import { PatientRepository } from '@/repositories/patient-repository'
 import { DoctorRepository } from '@/repositories/doctor-repository'
 import { PatientInactiveError } from './errors/ patient-inactive-error'
 import { ClinicOutsideOpeningHoursError } from './errors/clinic-outside-opening-hours-error'
+import { UserAlreadyExistsError } from './errors/user-already-exists-error'
+import { filterDoctorsWithNoConflict } from '@/utils/filter-doctors-with-no-conflict'
 
 interface QueryMedUseCaseRequest {
   patientCPF: string
@@ -40,7 +42,7 @@ export class QueryMedUseCase {
     const patient = await this.patientsRepository.findByCPF(patientCPF)
 
     if (!patient) {
-      throw new Error()
+      throw new UserAlreadyExistsError()
     }
 
     if (patient.activated === false) {
@@ -54,27 +56,41 @@ export class QueryMedUseCase {
         new Date(),
       )
 
-    console.log(queryOnSameDate)
-
     if (queryOnSameDate) {
       throw new ClinicOutsideOpeningHoursError()
     }
 
-    // selecionando um medico
+    // selecionando um médico
     const doctors = await this.doctorRepository.findManyAllDoctorsActived()
-    const doctorRadom = Math.floor(Math.random() * doctors.length)
+    const availableDoctors = await filterDoctorsWithNoConflict(
+      doctors,
+      start_time,
+    )
 
-    const { crm } = doctors[doctorRadom]
+    if (availableDoctors.length === 0) {
+      throw new Error('Não há medicos disponíveis para esse horário.')
+    }
 
-    const doctor = (await this.doctorRepository.findByCrm(crm)) as Doctor
+    const doctorRadom = Math.floor(Math.random() * availableDoctors.length)
+    const selectedDoctor = availableDoctors[doctorRadom]
+
+    // criando a consulta
 
     const query = await this.querysMedRepository.create({
       patientId: patient.id!,
-      doctorId: doctor.id,
+      doctorId: selectedDoctor.id,
       specialty,
       start_time,
     })
 
+    // adicionado a nova consulta ao medico.
+
+    const doctorWithQuery = await this.doctorRepository.updateDoctorWithQuery(
+      selectedDoctor.id,
+      query.id,
+    )
+
+    console.log(doctorWithQuery)
     return { query }
   }
 }

@@ -5,6 +5,19 @@ import dayjs from 'dayjs'
 
 export class InMemoryQuerysMedRepository implements QueryMedRepository {
   public querys: Query[] = []
+
+  async hasDoctorConflict(doctorId: string, startTime: Date): Promise<boolean> {
+    // Verifica se algum médico tem uma consulta no mesmo horário
+    const hasConflict = this.querys.some((query) => {
+      return (
+        query.doctorId === doctorId &&
+        query.start_time.getTime() === startTime.getTime()
+      )
+    })
+
+    return hasConflict
+  }
+
   async findByPatientIdOnDate(patientId: string, date: Date) {
     const startOftheDay = dayjs(date).startOf('date')
     const endOftheDay = dayjs(date).endOf('date')
@@ -40,11 +53,3 @@ export class InMemoryQuerysMedRepository implements QueryMedRepository {
     return queryMed
   }
 }
-
-/*     const start_time =
-      typeof data.start_time === 'string'
-        ? new Date(data.start_time)
-        : data.start_time
-
-        dayjs(date).startOf('date') -> date no js quer dizer o dia 
- */

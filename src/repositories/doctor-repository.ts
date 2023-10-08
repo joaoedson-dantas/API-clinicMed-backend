@@ -16,6 +16,10 @@ export interface DoctorRepository {
   >
 
   findManyAllDoctorsActived(): Promise<
-    Array<Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty'>>
+    Array<
+      Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'>
+    >
   >
+
+  updateDoctorWithQuery(doctorId: string, queryId: string): Promise<Doctor>
 }

@@ -1,3 +1,5 @@
+import { Query } from '@prisma/client'
+
 export interface Patient {
   id?: string | undefined
   name: string
@@ -7,4 +9,5 @@ export interface Patient {
   addressId: string
   activated?: boolean
   created_at?: Date
+  querys?: Query[]
 }
