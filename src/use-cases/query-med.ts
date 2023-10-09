@@ -8,7 +8,6 @@ import { PatientInactiveError } from './errors/ patient-inactive-error'
 import { ClinicOutsideOpeningHoursError } from './errors/clinic-outside-opening-hours-error'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import { filterDoctorsWithNoConflict } from '@/utils/filter-doctors-with-no-conflict'
-import { Doctor } from '@/models/Doctor'
 
 interface QueryMedUseCaseRequest {
   patientCPF: string
@@ -99,20 +98,44 @@ export class QueryMedUseCase {
 
     return { query }
   }
+}
 
-  private async selectDoctor(start_time: Date, doctorId?: string) {
+/*  id: string;
+created_at: Date
+start_time: Date
+end_time: Date | null
+specialty: string
+reason_cancellation: string | null
+patientId: string
+doctorId: string */
+
+/* id: 'a4f1f76f-9250-4373-b008-5e894af1f20e',
+  cpf: '12345678',
+  activated: false,
+  email: 'malu@gmail.com',
+  name: 'Malu Bernardo Dantas',
+  tel: '85992002328',
+  created_at: 2023-11-20T11:00:00.000Z,
+  addressId: 'bb291605-2645-470b-9eb0-a0a77d21b588' */
+
+/*  private async selectDoctor(start_time: Date, doctorId?: string) {
     if (doctorId) {
       const doctors: Doctor[] = []
       const doctor = await this.doctorRepository.findById(doctorId)
       if (doctor) {
         doctors.push(doctor)
-        createDoctorByParameter(doctors, start_time)
+        const doctorSelected = await createDoctorByParameter(
+          doctors,
+          start_time,
+        )
+        return doctorSelected
       }
     }
 
     if (!doctorId) {
       const doctors = await this.doctorRepository.findManyAllDoctorsActived()
-      selectedDoctorRadom(doctors, start_time)
+      const doctorSelected = await selectedDoctorRadom(doctors, start_time)
+      return doctorSelected
     }
 
     async function createDoctorByParameter(
@@ -131,8 +154,8 @@ export class QueryMedUseCase {
       if (availableDoctorsOnschedule.length === 0) {
         throw new Error('Médico indisponível nesse horário')
       }
-      const selectedDoctor = availableDoctorsOnschedule[0]
-      return selectedDoctor
+      const selectDoctor = availableDoctorsOnschedule[0]
+      return selectDoctor
     }
 
     async function selectedDoctorRadom(
@@ -158,23 +181,4 @@ export class QueryMedUseCase {
       const selectedDoctor = availableDoctorsOnschedule[doctorRadom]
       return selectedDoctor
     }
-  }
-}
-
-/*  id: string;
-created_at: Date
-start_time: Date
-end_time: Date | null
-specialty: string
-reason_cancellation: string | null
-patientId: string
-doctorId: string */
-
-/* id: 'a4f1f76f-9250-4373-b008-5e894af1f20e',
-  cpf: '12345678',
-  activated: false,
-  email: 'malu@gmail.com',
-  name: 'Malu Bernardo Dantas',
-  tel: '85992002328',
-  created_at: 2023-11-20T11:00:00.000Z,
-  addressId: 'bb291605-2645-470b-9eb0-a0a77d21b588' */
+  } */

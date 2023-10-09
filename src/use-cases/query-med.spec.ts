@@ -172,19 +172,16 @@ describe('query med Use Case', () => {
     expect(query.doctorId).toEqual(expect.any(String))
   })
 
-  it('teset', async () => {
-    vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0))
+  it('should not be possible to schedule an appointment when there are no available doctors', async () => {
+    vi.setSystemTime(new Date(2023, 10, 20, 20, 0, 0))
 
-    const doctors = await doctorsRepository.findManyAllDoctorsActived()
-
-    console.log(doctors)
-    const { query } = await sut.execute({
-      patientCPF: '04005103324',
-      specialty: 'ortopedia',
-      start_time: new Date(),
-    })
-
-    expect(query.doctorId).toEqual(expect.any(String))
+    await expect(() =>
+      sut.execute({
+        patientCPF: '04005103324',
+        specialty: 'ortopedia',
+        start_time: new Date(),
+      }),
+    ).rejects.toBeInstanceOf(Error)
   })
 })
 
