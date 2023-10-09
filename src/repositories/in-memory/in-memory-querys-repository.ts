@@ -6,6 +6,11 @@ import dayjs from 'dayjs'
 export class InMemoryQuerysMedRepository implements QueryMedRepository {
   public querys: Query[] = []
 
+  async findAllQuers() {
+    const querys = this.querys
+    return querys
+  }
+
   async hasDoctorConflict(doctorId: string, startTime: Date): Promise<boolean> {
     // Verifica se algum médico tem uma consulta no mesmo horário
 

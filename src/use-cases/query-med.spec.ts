@@ -183,6 +183,9 @@ describe('query med Use Case', () => {
       }),
     ).rejects.toBeInstanceOf(Error)
   })
+  it('should not be possible to schedule an appointment when there are no available doctors', async () => {
+    vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0))
+  })
 })
 
 /* vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0)) */
