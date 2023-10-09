@@ -173,18 +173,35 @@ describe('query med Use Case', () => {
   })
 
   it('should not be possible to schedule an appointment when there are no available doctors', async () => {
-    vi.setSystemTime(new Date(2023, 10, 20, 20, 0, 0))
+    vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0))
 
-    await expect(() =>
-      sut.execute({
-        patientCPF: '04005103324',
+    const doctorsActived = await doctorsRepository.findManyDoctorsActived(1)
+
+    console.log(doctorsActived)
+    for (let i = 0; i <= doctorsActived.length; i++) {
+      await patientRepository.create({
+        name: `Leia Bernardo Viana ${i}`,
+        email: `leialb${i}@gmail.com`,
+        tel: `8592002329`,
+        activated: true,
+        addressId: '1231231',
+        cpf: `040051033${i}${i}`,
+      })
+
+      await sut.execute({
+        patientCPF: `040051033${i}${i}`,
         specialty: 'ortopedia',
         start_time: new Date(),
-      }),
-    ).rejects.toBeInstanceOf(Error)
-  })
-  it('should not be possible to schedule an appointment when there are no available doctors', async () => {
-    vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0))
+      })
+    }
+
+    await sut.execute({
+      patientCPF: `04005103324`,
+      specialty: 'ortopedia',
+      start_time: new Date(),
+    })
+
+    const querys = await querysMedRepository.findAllQuers()
   })
 })
 

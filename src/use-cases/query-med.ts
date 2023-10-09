@@ -47,7 +47,7 @@ export class QueryMedUseCase {
       throw new UserAlreadyExistsError()
     }
 
-    if (patient.activated === false) {
+    if (!patient.activated) {
       throw new PatientInactiveError()
     }
 
@@ -91,7 +91,7 @@ export class QueryMedUseCase {
 
     // adicionado a nova consulta ao medico.
 
-    const doctorWithQuery = await this.doctorRepository.updateDoctorWithQuery(
+    await this.doctorRepository.updateDoctorWithQuery(
       selectedDoctor.id,
       query.id,
     )
