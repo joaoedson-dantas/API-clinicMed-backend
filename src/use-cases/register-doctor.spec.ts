@@ -36,8 +36,6 @@ describe('Register Doctor Use Case', () => {
       },
     })
 
-    console.log(doctor)
-
     expect(doctor.id).toEqual(expect.any(String))
     expect(addressRepository.items).toEqual(
       expect.arrayContaining([

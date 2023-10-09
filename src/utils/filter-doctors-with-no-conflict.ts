@@ -18,9 +18,10 @@ export async function filterDoctorsWithNoConflict(
       start_time,
     )
 
-    if (hasConflict) {
+    if (!hasConflict) {
       availableDoctor.push(doctor)
     }
   }
+
   return availableDoctor
 }

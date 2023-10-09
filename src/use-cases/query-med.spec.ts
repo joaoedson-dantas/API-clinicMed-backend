@@ -6,13 +6,13 @@ import { RegisterPatientUseCase } from './register-patient'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 import { PatientInactiveError } from './errors/ patient-inactive-error'
-import { compareSync } from 'bcryptjs'
 
 let querysMedRepository: InMemoryQuerysMedRepository
 let patientRepository: InMemoryPatientRepository
 let addressRepository: InMemoryAddressRepository
 let doctorsRepository: InMemoryDoctorRepository
 let patientCreated: RegisterPatientUseCase
+
 let sut: QueryMedUseCase
 
 describe('query med Use Case', () => {
@@ -31,7 +31,7 @@ describe('query med Use Case', () => {
       addressRepository,
     )
 
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 5; i++) {
       await doctorsRepository.create({
         name: `${i}`,
         email: `leialb2${i}@gmail.com`,
@@ -43,7 +43,7 @@ describe('query med Use Case', () => {
       })
     }
 
-    for (let i = 0; i < 15; i++) {
+    for (let i = 0; i < 5; i++) {
       await doctorsRepository.create({
         name: `${i}+${i}`,
         email: `leialb2${i}${i}${i}@gmail.com`,
@@ -78,7 +78,7 @@ describe('query med Use Case', () => {
   afterEach(() => {
     vi.useRealTimers()
   })
-  /*   it('should be able to query', async () => {
+  it('should be able to query', async () => {
     vi.setSystemTime(new Date(2023, 12, 20, 8, 0, 0))
     const { query } = await sut.execute({
       patientCPF: '04005103324',
@@ -87,9 +87,21 @@ describe('query med Use Case', () => {
     })
 
     expect(query.id).toEqual(expect.any(String))
-  }) */
+  })
 
   it('should be possible to schedule an appointment outside opening hours. from 7am to 7pm ', async () => {
+    vi.setSystemTime(new Date(2023, 11, 7, 18, 0, 0))
+
+    const { query } = await sut.execute({
+      patientCPF: '04005103324',
+      specialty: 'ortopedia',
+      start_time: new Date(),
+    })
+
+    expect(query.id).toEqual(expect.any(String))
+  })
+
+  it('Not should be possible to schedule an appointment outside opening hours. from 7am to 7pm', async () => {
     vi.setSystemTime(new Date(2023, 11, 7, 23, 0, 0))
 
     await expect(() =>
@@ -120,7 +132,7 @@ describe('query med Use Case', () => {
       },
     })
 
-    expect(patient.id).toEqual(expect.any(String)) // ok
+    expect(patient.id).toEqual(expect.any(String)) // ok - paciente criado
 
     await expect(() =>
       sut.execute({
@@ -131,6 +143,24 @@ describe('query med Use Case', () => {
     ).rejects.toBeInstanceOf(PatientInactiveError)
   })
 
+  it('should not be able to querys in twice in the same day', async () => {
+    vi.setSystemTime(new Date(2023, 12, 20, 8, 0, 0))
+
+    await sut.execute({
+      patientCPF: '04005103324',
+      specialty: 'ortopedia',
+      start_time: new Date(),
+    })
+
+    await expect(() =>
+      sut.execute({
+        patientCPF: '04005103324',
+        specialty: 'ortopedia',
+        start_time: new Date(),
+      }),
+    ).rejects.toBeInstanceOf(Error)
+  })
+
   it('must be possible to select an active doctor available for consultation', async () => {
     vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0))
     const { query } = await sut.execute({
@@ -138,7 +168,22 @@ describe('query med Use Case', () => {
       specialty: 'ortopedia',
       start_time: new Date(),
     })
-    console.log(query)
+
+    expect(query.doctorId).toEqual(expect.any(String))
+  })
+
+  it('teset', async () => {
+    vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0))
+
+    const doctors = await doctorsRepository.findManyAllDoctorsActived()
+
+    console.log(doctors)
+    const { query } = await sut.execute({
+      patientCPF: '04005103324',
+      specialty: 'ortopedia',
+      start_time: new Date(),
+    })
+
     expect(query.doctorId).toEqual(expect.any(String))
   })
 })
@@ -153,64 +198,3 @@ hora: 8,
 minutos: 0,
 sec: 0,
 } */
-
-/* it('should not be able to querys in twice in the same day', async () => {
-    vi.setSystemTime(new Date(2023, 12, 20, 8, 0, 0))
-
-    await sut.execute({
-      patientCPF: 'patient-01',
-      specialty: 'ortopedia',
-      start_time: new Date(),
-    })
-
-    await expect(() =>
-      sut.execute({
-        patientCPF: 'patient-01',
-        specialty: 'ortopedia',
-        start_time: new Date(),
-      }),
-    ).rejects.toBeInstanceOf(Error)
-  }) */
-
-/* it('should be possible to schedule an appointment outside opening hours. from 7am to 7pm ', async () => {
-    vi.setSystemTime(new Date(2023, 11, 7, 18, 0, 0))
-
-    const { query } = await sut.execute({
-      patientCPF: 'doctor-01',
-      specialty: 'ortopedia',
-      start_time: new Date(),
-    })
-
-    expect(query.id).toEqual(expect.any(String))
-  }) */
-
-/*  it('It should not be possible to schedule an appointment outside opening hours. from 7am to 7pm ', async () => {
-    vi.setSystemTime(new Date(2023, 11, 7, 20, 0, 0))
-
-    await expect(() =>
-      sut.execute({
-        patientCPF: 'doctor-01',
-        specialty: 'ortopedia',
-        start_time: new Date(),
-      }),
-    ).rejects.toBeInstanceOf(Error)
-  }) */
-
-/* it('should not be able to querys in twice in the same day', async () => {
-    vi.setSystemTime(new Date(2023, 12, 20, 8, 0, 0))
-
-    await sut.execute({
-      patientCPF: 'patient-01',
-      specialty: 'ortopedia',
-      start_time: new Date(),
-    })
-
-    await expect(() =>
-      sut.execute({
-        patientCPF: 'patient-01',
-        specialty: 'ortopedia',
-        start_time: new Date(),
-      }),
-    ).rejects.toBeInstanceOf(Error)
-  })
- */

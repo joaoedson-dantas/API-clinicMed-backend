@@ -8,9 +8,11 @@ import { PatientInactiveError } from './errors/ patient-inactive-error'
 import { ClinicOutsideOpeningHoursError } from './errors/clinic-outside-opening-hours-error'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import { filterDoctorsWithNoConflict } from '@/utils/filter-doctors-with-no-conflict'
+import { Doctor } from '@/models/Doctor'
 
 interface QueryMedUseCaseRequest {
   patientCPF: string
+  doctorId?: string
   start_time: Date
   specialty: string
 }
@@ -30,12 +32,13 @@ export class QueryMedUseCase {
     patientCPF,
     specialty,
     start_time,
+    doctorId,
   }: QueryMedUseCaseRequest): Promise<QueryMedUseCaseResponse> {
-    // verificando se a clica está aberta para o horario de consulta solicitado
+    // verificando se a clinica está aberta para o horario de consulta solicitado
     const clinicOpen = isConsultationWithinSchedule(start_time)
 
     if (!clinicOpen) {
-      throw new Error()
+      throw new ClinicOutsideOpeningHoursError()
     }
 
     // verificando se o paciente está inativo no sistema
@@ -49,7 +52,7 @@ export class QueryMedUseCase {
       throw new PatientInactiveError()
     }
 
-    // verificando se o paciente já tem alguma consulta marcado no dia
+    // verificando se o paciente já tem alguma consulta marcado no dia: Não pode duas consultas na mesma data.
     const queryOnSameDate =
       await this.querysMedRepository.findByPatientIdOnDate(
         patient.id!,
@@ -57,22 +60,26 @@ export class QueryMedUseCase {
       )
 
     if (queryOnSameDate) {
-      throw new ClinicOutsideOpeningHoursError()
+      throw new Error('Paciente com consuta na mesma data')
     }
 
     // selecionando um médico
+
     const doctors = await this.doctorRepository.findManyAllDoctorsActived()
-    const availableDoctors = await filterDoctorsWithNoConflict(
+
+    const availableDoctorsOnschedule = await filterDoctorsWithNoConflict(
       doctors,
       start_time,
     )
 
-    if (availableDoctors.length === 0) {
+    if (availableDoctorsOnschedule.length === 0) {
       throw new Error('Não há medicos disponíveis para esse horário.')
     }
 
-    const doctorRadom = Math.floor(Math.random() * availableDoctors.length)
-    const selectedDoctor = availableDoctors[doctorRadom]
+    const doctorRadom = Math.floor(
+      Math.random() * availableDoctorsOnschedule.length,
+    )
+    const selectedDoctor = availableDoctorsOnschedule[doctorRadom]
 
     // criando a consulta
 
@@ -90,8 +97,67 @@ export class QueryMedUseCase {
       query.id,
     )
 
-    console.log(doctorWithQuery)
     return { query }
+  }
+
+  private async selectDoctor(start_time: Date, doctorId?: string) {
+    if (doctorId) {
+      const doctors: Doctor[] = []
+      const doctor = await this.doctorRepository.findById(doctorId)
+      if (doctor) {
+        doctors.push(doctor)
+        createDoctorByParameter(doctors, start_time)
+      }
+    }
+
+    if (!doctorId) {
+      const doctors = await this.doctorRepository.findManyAllDoctorsActived()
+      selectedDoctorRadom(doctors, start_time)
+    }
+
+    async function createDoctorByParameter(
+      doctors: Array<
+        Pick<
+          Doctor,
+          'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'
+        >
+      >,
+      start_time: Date,
+    ) {
+      const availableDoctorsOnschedule = await filterDoctorsWithNoConflict(
+        doctors,
+        start_time,
+      )
+      if (availableDoctorsOnschedule.length === 0) {
+        throw new Error('Médico indisponível nesse horário')
+      }
+      const selectedDoctor = availableDoctorsOnschedule[0]
+      return selectedDoctor
+    }
+
+    async function selectedDoctorRadom(
+      doctors: Array<
+        Pick<
+          Doctor,
+          'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'
+        >
+      >,
+      start_time: Date,
+    ) {
+      const availableDoctorsOnschedule = await filterDoctorsWithNoConflict(
+        doctors,
+        start_time,
+      )
+      if (availableDoctorsOnschedule.length === 0) {
+        throw new Error('Não há medicos disponíveis para esse horário.')
+      }
+
+      const doctorRadom = Math.floor(
+        Math.random() * availableDoctorsOnschedule.length,
+      )
+      const selectedDoctor = availableDoctorsOnschedule[doctorRadom]
+      return selectedDoctor
+    }
   }
 }
 

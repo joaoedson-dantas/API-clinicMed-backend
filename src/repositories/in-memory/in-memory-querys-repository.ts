@@ -8,12 +8,14 @@ export class InMemoryQuerysMedRepository implements QueryMedRepository {
 
   async hasDoctorConflict(doctorId: string, startTime: Date): Promise<boolean> {
     // Verifica se algum médico tem uma consulta no mesmo horário
+
     const hasConflict = this.querys.some((query) => {
       return (
         query.doctorId === doctorId &&
         query.start_time.getTime() === startTime.getTime()
       )
     })
+    console.log(hasConflict)
 
     return hasConflict
   }
@@ -50,6 +52,7 @@ export class InMemoryQuerysMedRepository implements QueryMedRepository {
       created_at: new Date(),
     }
     this.querys.push(queryMed)
+
     return queryMed
   }
 }
