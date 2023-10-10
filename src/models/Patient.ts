@@ -1,7 +1,7 @@
 import { Query } from '@prisma/client'
 
 export interface Patient {
-  id?: string | undefined
+  id?: string
   name: string
   email: string
   tel: string

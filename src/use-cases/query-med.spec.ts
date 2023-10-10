@@ -175,10 +175,7 @@ describe('query med Use Case', () => {
   it('should not be possible to schedule an appointment when there are no available doctors', async () => {
     vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0))
 
-    const doctorsActived = await doctorsRepository.findManyDoctorsActived(1)
-
-    console.log(doctorsActived)
-    for (let i = 0; i <= doctorsActived.length; i++) {
+    for (let i = 0; i <= 5; i++) {
       await patientRepository.create({
         name: `Leia Bernardo Viana ${i}`,
         email: `leialb${i}@gmail.com`,
@@ -200,8 +197,6 @@ describe('query med Use Case', () => {
       specialty: 'ortopedia',
       start_time: new Date(),
     })
-
-    const querys = await querysMedRepository.findAllQuers()
   })
 })
 

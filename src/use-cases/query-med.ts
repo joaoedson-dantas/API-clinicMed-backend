@@ -7,7 +7,7 @@ import { DoctorRepository } from '@/repositories/doctor-repository'
 import { PatientInactiveError } from './errors/ patient-inactive-error'
 import { ClinicOutsideOpeningHoursError } from './errors/clinic-outside-opening-hours-error'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
-import { filterDoctorsWithNoConflict } from '@/utils/filter-doctors-with-no-conflict'
+import { Doctor } from '@/models/Doctor'
 
 interface QueryMedUseCaseRequest {
   patientCPF: string
@@ -43,7 +43,7 @@ export class QueryMedUseCase {
     // verificando se o paciente está inativo no sistema
     const patient = await this.patientsRepository.findByCPF(patientCPF)
 
-    if (!patient) {
+    if (!patient?.id) {
       throw new UserAlreadyExistsError()
     }
 
@@ -54,7 +54,7 @@ export class QueryMedUseCase {
     // verificando se o paciente já tem alguma consulta marcado no dia: Não pode duas consultas na mesma data.
     const queryOnSameDate =
       await this.querysMedRepository.findByPatientIdOnDate(
-        patient.id!,
+        patient.id,
         new Date(),
       )
 
@@ -66,12 +66,12 @@ export class QueryMedUseCase {
 
     const doctors = await this.doctorRepository.findManyAllDoctorsActived()
 
-    const availableDoctorsOnschedule = await filterDoctorsWithNoConflict(
+    const availableDoctorsOnschedule = await this.filterDoctorsWithNoConflict(
       doctors,
       start_time,
     )
 
-    if (availableDoctorsOnschedule.length === 0) {
+    if (!availableDoctorsOnschedule.length) {
       throw new Error('Não há medicos disponíveis para esse horário.')
     }
 
@@ -83,7 +83,7 @@ export class QueryMedUseCase {
     // criando a consulta
 
     const query = await this.querysMedRepository.create({
-      patientId: patient.id!,
+      patientId: patient.id,
       doctorId: selectedDoctor.id,
       specialty,
       start_time,
@@ -97,6 +97,30 @@ export class QueryMedUseCase {
     )
 
     return { query }
+  }
+
+  private async filterDoctorsWithNoConflict(
+    doctors: Array<
+      Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'>
+    >,
+    start_time: Date,
+  ) {
+    const availableDoctor: Array<
+      Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'>
+    > = []
+
+    for (const doctor of doctors) {
+      const hasConflict = await this.querysMedRepository.hasDoctorConflict(
+        doctor.id,
+        start_time,
+      )
+
+      if (!hasConflict) {
+        availableDoctor.push(doctor)
+      }
+    }
+
+    return availableDoctor
   }
 }
 
