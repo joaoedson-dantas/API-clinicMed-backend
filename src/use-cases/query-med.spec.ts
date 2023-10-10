@@ -172,10 +172,10 @@ describe('query med Use Case', () => {
     expect(query.doctorId).toEqual(expect.any(String))
   })
 
-  it('should not be possible to schedule an appointment when there are no available doctors', async () => {
+  it('should not be possible to schedule an appointment when there are no available doctors 5', async () => {
     vi.setSystemTime(new Date(2023, 10, 20, 8, 0, 0))
 
-    for (let i = 0; i <= 5; i++) {
+    for (let i = 0; i <= 4; i++) {
       await patientRepository.create({
         name: `Leia Bernardo Viana ${i}`,
         email: `leialb${i}@gmail.com`,
@@ -192,11 +192,13 @@ describe('query med Use Case', () => {
       })
     }
 
-    await sut.execute({
-      patientCPF: `04005103324`,
-      specialty: 'ortopedia',
-      start_time: new Date(),
-    })
+    await expect(() =>
+      sut.execute({
+        patientCPF: '04005103324',
+        specialty: 'ortopedia',
+        start_time: new Date(),
+      }),
+    ).rejects.toBeInstanceOf(Error)
   })
 })
 

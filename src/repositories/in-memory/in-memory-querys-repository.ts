@@ -20,7 +20,6 @@ export class InMemoryQuerysMedRepository implements QueryMedRepository {
         query.start_time.getHours() === startTime.getHours()
       )
     })
-    console.log(hasConflict)
 
     return hasConflict
   }
