@@ -65,7 +65,7 @@ ClinicMed
 - [ ] Não permitir o agendamento de consultas com pacientes inativos no sistema;
 - [ ] Não permitir o agendamento de consultas com médicos inativos no sistema;
 - [x] Não permitir o agendamento de mais de uma consulta no mesmo dia para um mesmo paciente;
-- [ ] Não permitir o agendamento de uma consulta com um médico que já possui outra consulta agendada na mesma data/hora;
+- [x] Não permitir o agendamento de uma consulta com um médico que já possui outra consulta agendada na mesma data/hora;
 - [ ] A escolha do médico é opcional, sendo que nesse caso o sistema deve escolher aleatoriamente algum médico disponível na data/hora preenchida.
 
 - [ ] É obrigatório informar o motivo do cancelamento da consulta, dentre as opções: paciente desistiu, médico cancelou ou outros;

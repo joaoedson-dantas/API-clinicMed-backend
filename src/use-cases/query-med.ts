@@ -8,6 +8,7 @@ import { PatientInactiveError } from './errors/ patient-inactive-error'
 import { ClinicOutsideOpeningHoursError } from './errors/clinic-outside-opening-hours-error'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import { Doctor } from '@/models/Doctor'
+import dayjs from 'dayjs'
 
 interface QueryMedUseCaseRequest {
   patientCPF: string
@@ -38,6 +39,19 @@ export class QueryMedUseCase {
 
     if (!clinicOpen) {
       throw new ClinicOutsideOpeningHoursError()
+    }
+
+    // verificando se a consulta está sendo agendada com antecedência mínima de 30m
+    const now = dayjs()
+    const distanceInMinutesFromQueryCreation = dayjs(start_time).diff(
+      now,
+      'minutes',
+    )
+
+    if (!(distanceInMinutesFromQueryCreation >= 30)) {
+      throw new Error(
+        'A consulta pode ser agendada, pois está ocorrendo com pelo menos 30 minutos de antecedência.',
+      )
     }
 
     // verificando se o paciente está inativo no sistema
