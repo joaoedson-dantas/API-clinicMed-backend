@@ -69,7 +69,7 @@ export class QueryMedUseCase {
     const queryOnSameDate =
       await this.querysMedRepository.findByPatientIdOnDate(
         patient.id,
-        new Date(),
+        start_time,
       )
 
     if (queryOnSameDate) {
