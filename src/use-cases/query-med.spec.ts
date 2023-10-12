@@ -7,6 +7,7 @@ import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-ad
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 import { PatientInactiveError } from './errors/ patient-inactive-error'
 import dayjs from 'dayjs'
+import { Specialty } from '@/models/Doctor'
 
 let querysMedRepository: InMemoryQuerysMedRepository
 let patientRepository: InMemoryPatientRepository
@@ -38,7 +39,7 @@ describe('query med Use Case', () => {
         email: `leialb2${i}@gmail.com`,
         activated: true,
         crm: `4362${i}`,
-        specialty: 'ortopedia',
+        specialty: Specialty.CARDIOLOGIA,
         tel: '85992002329',
         addressId: '123',
       })
@@ -50,7 +51,7 @@ describe('query med Use Case', () => {
         email: `leialb2${i}${i}${i}@gmail.com`,
         activated: false,
         crm: `4362${i}${i}${i}`,
-        specialty: 'ortopedia',
+        specialty: Specialty.CARDIOLOGIA,
         tel: '85992002329',
         addressId: '123',
       })
@@ -85,7 +86,7 @@ describe('query med Use Case', () => {
 
     const { query } = await sut.execute({
       patientCPF: '04005103324',
-      specialty: 'ortopedia',
+      specialty: 'CARDIOLOGIA',
       start_time: appointmentTime.toDate(),
     })
 
@@ -98,7 +99,7 @@ describe('query med Use Case', () => {
 
     const { query } = await sut.execute({
       patientCPF: '04005103324',
-      specialty: 'ortopedia',
+      specialty: 'CARDIOLOGIA',
       start_time: appointmentTime.toDate(),
     })
 
@@ -112,7 +113,7 @@ describe('query med Use Case', () => {
     await expect(() =>
       sut.execute({
         patientCPF: '04005103324',
-        specialty: 'ortopedia',
+        specialty: 'CARDIOLOGIA',
         start_time: appointmentTime.toDate(),
       }),
     ).rejects.toBeInstanceOf(Error)
@@ -144,7 +145,7 @@ describe('query med Use Case', () => {
     await expect(() =>
       sut.execute({
         patientCPF: patient.cpf,
-        specialty: 'ortopedia',
+        specialty: 'CARDIOLOGIA',
         start_time: appointmentTime.toDate(),
       }),
     ).rejects.toBeInstanceOf(PatientInactiveError)
@@ -156,14 +157,14 @@ describe('query med Use Case', () => {
 
     await sut.execute({
       patientCPF: '04005103324',
-      specialty: 'ortopedia',
+      specialty: 'CARDIOLOGIA',
       start_time: appointmentTime.toDate(),
     })
 
     await expect(() =>
       sut.execute({
         patientCPF: '04005103324',
-        specialty: 'ortopedia',
+        specialty: 'CARDIOLOGIA',
         start_time: appointmentTime.toDate(),
       }),
     ).rejects.toBeInstanceOf(Error)
@@ -175,7 +176,7 @@ describe('query med Use Case', () => {
 
     const { query } = await sut.execute({
       patientCPF: '04005103324',
-      specialty: 'ortopedia',
+      specialty: 'CARDIOLOGIA',
       start_time: appointmentTime.toDate(),
     })
 
@@ -198,7 +199,7 @@ describe('query med Use Case', () => {
 
       await sut.execute({
         patientCPF: `040051033${i}${i}`,
-        specialty: 'ortopedia',
+        specialty: 'CARDIOLOGIA',
         start_time: appointmentTime.toDate(),
       })
     }
@@ -206,7 +207,7 @@ describe('query med Use Case', () => {
     await expect(() =>
       sut.execute({
         patientCPF: '04005103324',
-        specialty: 'ortopedia',
+        specialty: 'CARDIOLOGIA',
         start_time: new Date(),
       }),
     ).rejects.toBeInstanceOf(Error)
@@ -220,7 +221,7 @@ describe('query med Use Case', () => {
     await expect(() =>
       sut.execute({
         patientCPF: '04005103324',
-        specialty: 'ortopedia',
+        specialty: 'CARDIOLOGIA',
         start_time: appointmentTime.toDate(),
       }),
     ).rejects.toBeInstanceOf(Error)
@@ -231,9 +232,11 @@ describe('query med Use Case', () => {
     const appointmentTime = dayjs(new Date()).add(31, 'minute')
     const { query } = await sut.execute({
       patientCPF: '04005103324',
-      specialty: 'ortopedia',
+      specialty: 'CARDIOLOGIA',
       start_time: appointmentTime.toDate(),
     })
+
+    console.log(query)
 
     expect(query.start_time).toEqual(expect.any(Date))
   })

@@ -1,8 +1,16 @@
+import { Doctor } from '@prisma/client'
 import { DoctorRepository } from '../doctor-repository'
 import { prisma } from '@/lib/prisma'
-import { Doctor } from '@/models/Doctor'
 
 export class PrismaDoctorRepository implements DoctorRepository {
+  async findManyAllDoctorsActived() {
+    throw new Error('Method not implemented.')
+  }
+
+  async updateDoctorWithQuery(doctorId: string, queryId: string) {
+    throw new Error('Method not implemented.')
+  }
+
   async inactivate(idDoctor: string) {
     const updatedDoctor = await prisma.doctor.update({
       where: { id: idDoctor },

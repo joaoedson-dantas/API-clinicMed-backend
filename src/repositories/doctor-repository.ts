@@ -1,10 +1,13 @@
-import { Doctor } from '@/models/Doctor'
+/* import { Doctor } from '@/models/Doctor' */
+
+import { Doctor } from '@prisma/client'
 
 export interface DoctorRepository {
   create(data: Omit<Doctor, 'id'>): Promise<Doctor>
   update(
     data: Omit<Doctor, 'email' | 'crm' | 'specialty' | 'activated'>,
   ): Promise<Doctor>
+
   inactivate(id: string): Promise<Doctor>
   findByCrm(crm: string): Promise<Doctor | null>
   findByEmail(email: string): Promise<Doctor | null>

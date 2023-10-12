@@ -1,14 +1,15 @@
 import { DoctorRepository } from '@/repositories/doctor-repository'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import { AddressRepository } from '@/repositories/address-repository'
-import { Doctor } from '@/models/Doctor'
+import { Doctor, Specialty } from '@prisma/client'
+/* import { Doctor } from '@/models/Doctor' */
 
 interface RegisterDoctorUseCaseResqust {
   name: string
   email: string
   tel: string
   crm: string
-  specialty: string
+  specialty: Specialty
   address: {
     road: string
     district: string

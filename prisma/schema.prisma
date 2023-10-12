@@ -36,18 +36,26 @@ model Address {
 }
 
 model Doctor {
-  id        String  @id @default(uuid())
+  id        String    @id @default(uuid())
   name      String
-  email     String  @unique
+  email     String    @unique
   tel       String
-  crm       String  @unique
-  specialty String
-  address   Address @relation(fields: [addressId], references: [id])
+  crm       String    @unique
+  specialty Specialty @default(CLINICO_GERAL)
+  address   Address   @relation(fields: [addressId], references: [id])
   addressId String
-  activated Boolean @default(true)
+  activated Boolean   @default(true)
   querys    Query[]
 
   @@map("doctors")
+}
+
+enum Specialty {
+  CLINICO_GERAL
+  ORTOPEDIA
+  CARDIOLOGIA
+  GINECOLOGIA
+  DERMATOLOGIA
 }
 
 model Patient {
