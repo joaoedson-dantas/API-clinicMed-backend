@@ -66,8 +66,7 @@ export class QueryMedUseCase {
     }
 
     // verificando se o paciente já tem alguma consulta marcado no dia: Não pode duas consultas na mesma data.
-    const end_time = new Date(start_time.getHours() + 1)
-    console.log(end_time)
+
     const queryOnSameDate =
       await this.querysMedRepository.findByPatientIdOnDate(
         patient.id,
@@ -82,9 +81,11 @@ export class QueryMedUseCase {
 
     const doctors = await this.doctorRepository.findManyAllDoctorsActived()
 
+    const end_time = dayjs(start_time).add(1, 'hour').toDate()
     const availableDoctorsOnschedule = await this.filterDoctorsWithNoConflict(
       doctors,
       start_time,
+      end_time,
     )
 
     if (!availableDoctorsOnschedule.length) {
@@ -121,6 +122,7 @@ export class QueryMedUseCase {
       Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'>
     >,
     start_time: Date,
+    end_time: Date,
   ) {
     const availableDoctor: Array<
       Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'>
@@ -130,6 +132,7 @@ export class QueryMedUseCase {
       const hasConflict = await this.querysMedRepository.hasDoctorConflict(
         doctor.id,
         start_time,
+        end_time,
       )
 
       if (!hasConflict) {

@@ -36,8 +36,6 @@ describe('Register Doctor Use Case', () => {
       },
     })
 
-    console.log(doctor)
-
     expect(doctor.id).toEqual(expect.any(String))
     expect(addressRepository.items).toEqual(
       expect.arrayContaining([
@@ -54,88 +52,4 @@ describe('Register Doctor Use Case', () => {
       ]),
     )
   })
-
-  /* it('should not be possible to register a doctor with a CRM already registered', async () => {
-    const crm = '12345'
-
-    await sut.execute({
-      name: 'Leia',
-      email: 'leialb28@gmail.com',
-      activated: true,
-      crm,
-      specialty: 'ortopedia',
-      tel: '85992002329',
-      address: {
-        city: 'Fortaleza',
-        district: 'Granja Portugal',
-        road: 'teododro',
-        uf: 'ce',
-        zip_code: '60541195',
-        complement: 'ap5',
-        number: '766',
-      },
-    })
-
-    await expect(() =>
-      sut.execute({
-        name: 'Leia',
-        email: 'leialb28@gmail.com',
-        activated: true,
-        crm,
-        specialty: 'ortopedia',
-        tel: '85992002329',
-        address: {
-          city: 'Fortaleza',
-          district: 'Granja Portugal',
-          road: 'teododro',
-          uf: 'ce',
-          zip_code: '60541195',
-          complement: 'ap5',
-          number: '766',
-        },
-      }),
-    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
-  })
-
-  it('should not be possible to register a doctor with a E-mail already registered', async () => {
-    const email = 'joaoedson.dantas@outlook.com'
-
-    await sut.execute({
-      name: 'Leia',
-      email,
-      activated: true,
-      crm: '1234',
-      specialty: Specialty.CARDIOLOGIA,
-      tel: '85992002329',
-      address: {
-        city: 'Fortaleza',
-        district: 'Granja Portugal',
-        road: 'teododro',
-        uf: 'ce',
-        zip_code: '60541195',
-        complement: 'ap5',
-        number: '766',
-      },
-    })
-
-    await expect(() =>
-      sut.execute({
-        name: 'Leia',
-        email,
-        activated: true,
-        crm: '3232',
-        specialty: Specialty.CARDIOLOGIA,
-        tel: '85992002329',
-        address: {
-          city: 'Fortaleza',
-          district: 'Granja Portugal',
-          road: 'teododro',
-          uf: 'ce',
-          zip_code: '60541195',
-          complement: 'ap5',
-          number: '766',
-        },
-      }),
-    ).rejects.toBeInstanceOf(UserAlreadyExistsError)
-  }) */
 })

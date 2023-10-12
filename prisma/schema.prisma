@@ -74,10 +74,10 @@ model Patient {
 }
 
 model Query {
-  id         String    @id @default(uuid())
-  created_at DateTime  @default(now())
+  id         String   @id @default(uuid())
+  created_at DateTime @default(now())
   start_time DateTime
-  end_time   DateTime?
+  end_time   DateTime
   specialty  String
 
   doctor              Doctor  @relation(fields: [doctorId], references: [id])

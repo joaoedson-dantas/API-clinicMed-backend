@@ -1,5 +1,5 @@
-import { Doctor } from '@/models/Doctor'
 import { DoctorRepository } from '@/repositories/doctor-repository'
+import { Doctor } from '@prisma/client'
 
 interface GetListDoctorsUseCaseRequest {
   page: number

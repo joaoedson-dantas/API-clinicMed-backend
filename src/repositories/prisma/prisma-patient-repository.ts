@@ -1,4 +1,5 @@
-import { Patient } from '@/models/Patient'
+/* import { Patient } from '@/models/Patient' */
+import { Patient } from '@prisma/client'
 import { PatientRepository } from '../patient-repository'
 import { prisma } from '@/lib/prisma'
 

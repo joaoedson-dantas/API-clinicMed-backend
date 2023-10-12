@@ -11,14 +11,25 @@ export class InMemoryQuerysMedRepository implements QueryMedRepository {
     return querys
   }
 
-  async hasDoctorConflict(doctorId: string, startTime: Date): Promise<boolean> {
+  async hasDoctorConflict(
+    doctorId: string,
+    startTime: Date,
+    endTime: Date,
+  ): Promise<boolean> {
     // Verifica se algum médico tem uma consulta no mesmo horário
 
     const hasConflict = this.querys.some((query) => {
-      return (
-        query.doctorId === doctorId &&
-        query.start_time.getHours() === startTime.getHours()
-      )
+      if (query.doctorId === doctorId) {
+        if (startTime >= query.end_time) {
+          return false
+        }
+
+        if (endTime <= query.start_time) {
+          return false
+        }
+        return true
+      }
+      return false
     })
 
     return hasConflict
@@ -48,7 +59,7 @@ export class InMemoryQuerysMedRepository implements QueryMedRepository {
       patientId: data.patientId,
       doctorId: data.doctorId,
       start_time: data.start_time as Date,
-      end_time: null,
+      end_time: data.end_time as Date,
       reason_cancellation: data.reason_cancellation
         ? data.reason_cancellation
         : null,
