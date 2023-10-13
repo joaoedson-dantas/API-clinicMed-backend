@@ -8,6 +8,8 @@ import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doc
 import { PatientInactiveError } from './errors/ patient-inactive-error'
 import dayjs from 'dayjs'
 import { Specialty } from '@/models/Doctor'
+import { DoctorUnavailableOnTime } from './errors/doctor-unavailable-on-time'
+import { PatientAppointmentSameDate } from './errors/ patient-appointment-same-date'
 
 let querysMedRepository: InMemoryQuerysMedRepository
 let patientRepository: InMemoryPatientRepository
@@ -61,6 +63,22 @@ describe('query med Use Case', () => {
       name: 'Leia Bernarndo Viana',
       email: 'leialb28@gmail.com',
       cpf: '04005103324',
+      tel: '85992002328',
+      activated: true,
+      address: {
+        road: 'Rua São João',
+        district: 'Parque Dois Irmãos',
+        zip_code: '321412',
+        complement: 'apt.04',
+        number: '755',
+        uf: 'ce',
+        city: 'Fortaleza',
+      },
+    })
+    await patientCreated.execute({
+      name: 'Leia Bernarndo Viana',
+      email: 'leialb29@gmail.com',
+      cpf: '04005103325',
       tel: '85992002328',
       activated: true,
       address: {
@@ -167,7 +185,7 @@ describe('query med Use Case', () => {
         specialty: 'CARDIOLOGIA',
         start_time: appointmentTime.toDate(),
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(PatientAppointmentSameDate)
   })
 
   it('must be possible to select an active doctor available for consultation', async () => {
@@ -208,9 +226,9 @@ describe('query med Use Case', () => {
       sut.execute({
         patientCPF: '04005103324',
         specialty: 'CARDIOLOGIA',
-        start_time: new Date(),
+        start_time: appointmentTime.toDate(),
       }),
-    ).rejects.toBeInstanceOf(Error)
+    ).rejects.toBeInstanceOf(DoctorUnavailableOnTime)
   })
 
   it('should not be possible to schedule an appointment without at least 30m in advance.', async () => {

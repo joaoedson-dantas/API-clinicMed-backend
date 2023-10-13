@@ -6,8 +6,10 @@ import { PatientRepository } from '@/repositories/patient-repository'
 import { DoctorRepository } from '@/repositories/doctor-repository'
 import { PatientInactiveError } from './errors/ patient-inactive-error'
 import { ClinicOutsideOpeningHoursError } from './errors/clinic-outside-opening-hours-error'
+import { DoctorUnavailableOnTime } from './errors/doctor-unavailable-on-time'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import dayjs from 'dayjs'
+import { PatientAppointmentSameDate } from './errors/ patient-appointment-same-date'
 
 interface QueryMedUseCaseRequest {
   patientCPF: string
@@ -74,7 +76,7 @@ export class QueryMedUseCase {
       )
 
     if (queryOnSameDate) {
-      throw new Error('Paciente com consuta na mesma data')
+      throw new PatientAppointmentSameDate()
     }
 
     // selecionando um médico
@@ -89,7 +91,7 @@ export class QueryMedUseCase {
     )
 
     if (!availableDoctorsOnschedule.length) {
-      throw new Error('Não há medicos disponíveis para esse horário.')
+      throw new DoctorUnavailableOnTime()
     }
 
     const doctorRadom = Math.floor(
