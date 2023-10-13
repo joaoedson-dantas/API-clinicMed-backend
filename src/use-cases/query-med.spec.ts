@@ -4,12 +4,12 @@ import { QueryMedUseCase } from './query-med'
 import { InMemoryPatientRepository } from '@/repositories/in-memory/in-memory-patient-repository'
 import { RegisterPatientUseCase } from './register-patient'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
-import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 import { PatientInactiveError } from './errors/ patient-inactive-error'
 import dayjs from 'dayjs'
 import { Specialty } from '@/models/Doctor'
 import { DoctorUnavailableOnTime } from './errors/doctor-unavailable-on-time'
 import { PatientAppointmentSameDate } from './errors/ patient-appointment-same-date'
+import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 
 let querysMedRepository: InMemoryQuerysMedRepository
 let patientRepository: InMemoryPatientRepository
@@ -255,6 +255,45 @@ describe('query med Use Case', () => {
     })
 
     expect(query.start_time).toEqual(expect.any(Date))
+  })
+
+  it('must be possible to schedule a medical appointment according to the past specialty.', async () => {
+    vi.setSystemTime(new Date(2023, 9, 10, 13, 0, 0))
+
+    const appointmentTime = dayjs(new Date()).add(31, 'minute')
+
+    await doctorsRepository.create({
+      name: `joaozinho`,
+      email: `joaozinho2@gmail.com`,
+      activated: true,
+      crm: `23443`,
+      specialty: Specialty.GINECOLOGIA,
+      tel: '85992002329',
+      addressId: '123',
+    })
+
+    const { query } = await sut.execute({
+      patientCPF: '04005103324',
+      specialty: 'GINECOLOGIA',
+      start_time: appointmentTime.toDate(),
+    })
+
+    console.log(query)
+
+    expect(query.specialty).toEqual(Specialty.GINECOLOGIA)
+  })
+
+  it('should not be possible to schedule a medical appointment with a doctor with a different specialty', async () => {
+    vi.setSystemTime(new Date(2023, 9, 10, 13, 0, 0))
+
+    const appointmentTime = dayjs(new Date()).add(31, 'minute')
+    await expect(() =>
+      sut.execute({
+        patientCPF: '04005103324',
+        specialty: 'DERMATOLOGIA',
+        start_time: appointmentTime.toDate(),
+      }),
+    ).rejects.toBeInstanceOf(DoctorUnavailableOnTime)
   })
 })
 

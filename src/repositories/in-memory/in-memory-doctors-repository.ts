@@ -3,7 +3,7 @@ import { Doctor } from '@/models/Doctor'
 import { $Enums } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-export class findAllDoctorsBySpecialty implements DoctorRepository {
+export class InMemoryDoctorRepository implements DoctorRepository {
   public doctors: Doctor[] = []
 
   async findAllActiveDoctorsBySpecialty(specialty: $Enums.Specialty) {
