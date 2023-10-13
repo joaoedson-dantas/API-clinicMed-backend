@@ -25,4 +25,6 @@ export interface DoctorRepository {
   >
 
   updateDoctorWithQuery(doctorId: string, queryId: string): Promise<Doctor>
+
+  activeDoctor(doctorId: string): Promise<boolean>
 }

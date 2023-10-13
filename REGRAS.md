@@ -61,7 +61,7 @@ ClinicMed
 
 - [x] O horário de funcionamento da clínica é de segunda a sábado, das 07:00 às 19:00;
 - [x] As consultas devem ser agendadas com antecedência mínima de 30 minutos;
-- [ ] As consultas tem duração fixa de 1 hora;
+- [x] As consultas tem duração fixa de 1 hora;
 - [x] Não permitir o agendamento de consultas com pacientes inativos no sistema;
 - [x] Não permitir o agendamento de consultas com médicos inativos no sistema;
 - [x] Não permitir o agendamento de mais de uma consulta no mesmo dia para um mesmo paciente;

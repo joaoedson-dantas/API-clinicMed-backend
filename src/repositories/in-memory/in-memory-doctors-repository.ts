@@ -1,5 +1,6 @@
 import { DoctorRepository } from '../doctor-repository'
 import { Doctor } from '@/models/Doctor'
+import { $Enums } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
 export class InMemoryDoctorRepository implements DoctorRepository {
@@ -93,6 +94,19 @@ export class InMemoryDoctorRepository implements DoctorRepository {
         specialty: doctor.specialty,
         activated: doctor.activated,
       }))
+  }
+
+  async activeDoctor(doctorId: string) {
+    const doctor = await this.findById(doctorId)
+
+    if (!doctor) {
+      throw new Error()
+    }
+
+    if (!doctor.activated) {
+      return false
+    }
+    return true
   }
 
   async create(data: Omit<Doctor, 'id'>) {

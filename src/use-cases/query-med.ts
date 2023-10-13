@@ -80,24 +80,23 @@ export class QueryMedUseCase {
     }
 
     // selecionando um médico
-
-    const doctors = await this.doctorRepository.findManyAllDoctorsActived()
-
     const end_time = dayjs(start_time).add(1, 'hour').toDate()
-    const availableDoctorsOnschedule = await this.filterDoctorsWithNoConflict(
-      doctors,
-      start_time,
-      end_time,
-    )
 
-    if (!availableDoctorsOnschedule.length) {
-      throw new DoctorUnavailableOnTime()
+    let selectedDoctor
+
+    if (doctorId) {
+      selectedDoctor = await this.selectDoctorParam(
+        doctorId,
+        start_time,
+        end_time,
+      )
+    } else {
+      selectedDoctor = await this.selectedDoctorRadom(start_time, end_time)
     }
 
-    const doctorRadom = Math.floor(
-      Math.random() * availableDoctorsOnschedule.length,
-    )
-    const selectedDoctor = availableDoctorsOnschedule[doctorRadom]
+    if (!selectedDoctor) {
+      throw new DoctorUnavailableOnTime()
+    }
 
     // criando a consulta
 
@@ -144,87 +143,55 @@ export class QueryMedUseCase {
 
     return availableDoctor
   }
+
+  private async selectDoctorParam(
+    doctorId: string,
+    start_time: Date,
+    end_time: Date,
+  ) {
+    // verificando se medico exite na base e se está ativo
+    const selectedDoctor = this.doctorRepository.findById(doctorId)
+
+    if (!selectedDoctor) {
+      throw new UserAlreadyExistsError()
+    }
+
+    const doctorActived = await this.doctorRepository.activeDoctor(doctorId)
+    if (!doctorActived) {
+      throw new UserAlreadyExistsError()
+    }
+
+    // veirficando se o medico tem conflito de horarios
+    const hasConflict = await this.querysMedRepository.hasDoctorConflict(
+      doctorId,
+      start_time,
+      end_time,
+    )
+
+    if (hasConflict) {
+      throw new DoctorUnavailableOnTime()
+    }
+    return selectedDoctor
+  }
+
+  private async selectedDoctorRadom(start_time: Date, end_time: Date) {
+    const doctors = await this.doctorRepository.findManyAllDoctorsActived()
+
+    const availableDoctorsOnschedule = await this.filterDoctorsWithNoConflict(
+      doctors,
+      start_time,
+      end_time,
+    )
+
+    if (!availableDoctorsOnschedule.length) {
+      throw new DoctorUnavailableOnTime()
+    }
+
+    const doctorRadom = Math.floor(
+      Math.random() * availableDoctorsOnschedule.length,
+    )
+    const selectedDoctor = availableDoctorsOnschedule[doctorRadom]
+
+    return selectedDoctor
+  }
 }
-
-/*  id: string;
-created_at: Date
-start_time: Date
-end_time: Date | null
-specialty: string
-reason_cancellation: string | null
-patientId: string
-doctorId: string */
-
-/* id: 'a4f1f76f-9250-4373-b008-5e894af1f20e',
-  cpf: '12345678',
-  activated: false,
-  email: 'malu@gmail.com',
-  name: 'Malu Bernardo Dantas',
-  tel: '85992002328',
-  created_at: 2023-11-20T11:00:00.000Z,
-  addressId: 'bb291605-2645-470b-9eb0-a0a77d21b588' */
-
-/*  private async selectDoctor(start_time: Date, doctorId?: string) {
-    if (doctorId) {
-      const doctors: Doctor[] = []
-      const doctor = await this.doctorRepository.findById(doctorId)
-      if (doctor) {
-        doctors.push(doctor)
-        const doctorSelected = await createDoctorByParameter(
-          doctors,
-          start_time,
-        )
-        return doctorSelected
-      }
-    }
-
-    if (!doctorId) {
-      const doctors = await this.doctorRepository.findManyAllDoctorsActived()
-      const doctorSelected = await selectedDoctorRadom(doctors, start_time)
-      return doctorSelected
-    }
-
-    async function createDoctorByParameter(
-      doctors: Array<
-        Pick<
-          Doctor,
-          'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'
-        >
-      >,
-      start_time: Date,
-    ) {
-      const availableDoctorsOnschedule = await filterDoctorsWithNoConflict(
-        doctors,
-        start_time,
-      )
-      if (availableDoctorsOnschedule.length === 0) {
-        throw new Error('Médico indisponível nesse horário')
-      }
-      const selectDoctor = availableDoctorsOnschedule[0]
-      return selectDoctor
-    }
-
-    async function selectedDoctorRadom(
-      doctors: Array<
-        Pick<
-          Doctor,
-          'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'
-        >
-      >,
-      start_time: Date,
-    ) {
-      const availableDoctorsOnschedule = await filterDoctorsWithNoConflict(
-        doctors,
-        start_time,
-      )
-      if (availableDoctorsOnschedule.length === 0) {
-        throw new Error('Não há medicos disponíveis para esse horário.')
-      }
-
-      const doctorRadom = Math.floor(
-        Math.random() * availableDoctorsOnschedule.length,
-      )
-      const selectedDoctor = availableDoctorsOnschedule[doctorRadom]
-      return selectedDoctor
-    }
-  } */
