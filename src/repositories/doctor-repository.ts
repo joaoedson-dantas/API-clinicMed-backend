@@ -1,6 +1,6 @@
 /* import { Doctor } from '@/models/Doctor' */
 
-import { Doctor } from '@prisma/client'
+import { Doctor, Specialty } from '@prisma/client'
 
 export interface DoctorRepository {
   create(data: Omit<Doctor, 'id'>): Promise<Doctor>
@@ -27,4 +27,12 @@ export interface DoctorRepository {
   updateDoctorWithQuery(doctorId: string, queryId: string): Promise<Doctor>
 
   activeDoctor(doctorId: string): Promise<boolean>
+
+  findAllActiveDoctorsBySpecialty(
+    specialty: Specialty,
+  ): Promise<
+    Array<
+      Pick<Doctor, 'name' | 'email' | 'crm' | 'activated' | 'specialty' | 'id'>
+    >
+  >
 }

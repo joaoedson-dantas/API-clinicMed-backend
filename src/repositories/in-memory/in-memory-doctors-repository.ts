@@ -3,8 +3,21 @@ import { Doctor } from '@/models/Doctor'
 import { $Enums } from '@prisma/client'
 import { randomUUID } from 'crypto'
 
-export class InMemoryDoctorRepository implements DoctorRepository {
+export class findAllDoctorsBySpecialty implements DoctorRepository {
   public doctors: Doctor[] = []
+
+  async findAllActiveDoctorsBySpecialty(specialty: $Enums.Specialty) {
+    return this.doctors
+      .filter((doctor) => doctor.activated && doctor.specialty === specialty)
+      .map((doctor) => ({
+        name: doctor.name,
+        email: doctor.email,
+        crm: doctor.crm,
+        specialty: doctor.specialty,
+        activated: doctor.activated,
+        id: doctor.id,
+      }))
+  }
 
   async updateDoctorWithQuery(doctorId: string, queryId: string) {
     const doctor = await this.findById(doctorId)

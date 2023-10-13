@@ -37,6 +37,12 @@ export class QueryMedUseCase {
   }: QueryMedUseCaseRequest): Promise<QueryMedUseCaseResponse> {
     // verificando se a clinica está aberta para o horario de consulta solicitado
 
+    if (!specialty && doctorId) {
+      throw new Error(
+        'É necessário especificar a especialidade quando não é passado um médico',
+      )
+    }
+
     const clinicOpen = isConsultationWithinSchedule(start_time)
 
     if (!clinicOpen) {
@@ -91,7 +97,11 @@ export class QueryMedUseCase {
         end_time,
       )
     } else {
-      selectedDoctor = await this.selectedDoctorRadom(start_time, end_time)
+      selectedDoctor = await this.selectedDoctorRadom(
+        start_time,
+        end_time,
+        specialty,
+      )
     }
 
     if (!selectedDoctor) {
@@ -174,8 +184,13 @@ export class QueryMedUseCase {
     return selectedDoctor
   }
 
-  private async selectedDoctorRadom(start_time: Date, end_time: Date) {
-    const doctors = await this.doctorRepository.findManyAllDoctorsActived()
+  private async selectedDoctorRadom(
+    start_time: Date,
+    end_time: Date,
+    specialty: Specialty,
+  ) {
+    const doctors =
+      await this.doctorRepository.findAllActiveDoctorsBySpecialty(specialty)
 
     const availableDoctorsOnschedule = await this.filterDoctorsWithNoConflict(
       doctors,
