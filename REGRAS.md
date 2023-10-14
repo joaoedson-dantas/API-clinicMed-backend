@@ -35,7 +35,7 @@ ClinicMed
 - [x] Deve ser possível a exclusão de pacientes.
 
 ### Consultas
-- [ ] O sistema deve permitir um agendamento de consulta;
+- [x] O sistema deve permitir um agendamento de consulta;
     ->  Para agendamento de consulta será necessário ao menos um paciente, um médico, data e hora da consulta
 
 - [ ] O sistema deve permitir um cancelamento de consulta.
@@ -67,7 +67,7 @@ ClinicMed
 - [x] Não permitir o agendamento de mais de uma consulta no mesmo dia para um mesmo paciente;
 - [x] Não permitir o agendamento de uma consulta com um médico que já possui outra consulta agendada na mesma data/hora;
 - [x] A escolha do médico é opcional, sendo que nesse caso o sistema deve escolher aleatoriamente algum médico disponível na data/hora preenchida.
-- [ ] A escolha do médico deve ser com base na especialidade do medico
+- [x] A escolha do médico deve ser com base na especialidade do medico
 
 - [ ] É obrigatório informar o motivo do cancelamento da consulta, dentre as opções: paciente desistiu, médico cancelou ou outros;
 - [ ] Uma consulta somente poderá ser cancelada com antecedência mínima de 24 horas.
