@@ -50,14 +50,6 @@ model Doctor {
   @@map("doctors")
 }
 
-enum Specialty {
-  CLINICO_GERAL
-  ORTOPEDIA
-  CARDIOLOGIA
-  GINECOLOGIA
-  DERMATOLOGIA
-}
-
 model Patient {
   id         String   @id @default(uuid())
   name       String
@@ -73,16 +65,30 @@ model Patient {
   @@map("patients")
 }
 
+enum Specialty {
+  CLINICO_GERAL
+  ORTOPEDIA
+  CARDIOLOGIA
+  GINECOLOGIA
+  DERMATOLOGIA
+}
+
+enum Cancellation {
+  PACIENTE_DESISTIU
+  MEDICO_CANCELOU
+  OUTROS
+}
+
 model Query {
-  id         String   @id @default(uuid())
-  created_at DateTime @default(now())
+  id         String    @id @default(uuid())
+  created_at DateTime  @default(now())
   start_time DateTime
   end_time   DateTime
-  specialty  String
+  specialty  Specialty
 
-  doctor              Doctor  @relation(fields: [doctorId], references: [id])
-  patient             Patient @relation(fields: [patientId], references: [id])
-  reason_cancellation String?
+  doctor              Doctor        @relation(fields: [doctorId], references: [id])
+  patient             Patient       @relation(fields: [patientId], references: [id])
+  reason_cancellation Cancellation?
   patientId           String
   doctorId            String
 

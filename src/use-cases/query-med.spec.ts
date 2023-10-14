@@ -274,7 +274,7 @@ describe('query med Use Case', () => {
 
     const { query } = await sut.execute({
       patientCPF: '04005103324',
-      specialty: 'CLINICO_GERAL',
+      specialty: 'GINECOLOGIA',
       start_time: appointmentTime.toDate(),
     })
 

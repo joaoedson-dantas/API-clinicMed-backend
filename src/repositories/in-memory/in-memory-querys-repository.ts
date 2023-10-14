@@ -1,10 +1,39 @@
-import { Prisma, Query } from '@prisma/client'
+import { $Enums, Prisma, Query } from '@prisma/client'
 import { QueryMedRepository } from '../query-med-repository'
 import { randomUUID } from 'node:crypto'
 import dayjs from 'dayjs'
 
 export class InMemoryQuerysMedRepository implements QueryMedRepository {
   public querys: Query[] = []
+
+  async findById(appointment_id: string) {
+    const appointment = this.querys.find((query) => query.id === appointment_id)
+
+    if (!appointment) {
+      return null
+    }
+
+    return appointment
+  }
+
+  async appointmentCancellation(
+    appointment_id: string,
+    reason_cancellation: $Enums.Cancellation,
+  ) {
+    const appointment = await this.findById(appointment_id)
+
+    if (!appointment) {
+      return null
+    }
+    appointment.reason_cancellation = reason_cancellation
+
+    this.querys.forEach((query, index) => {
+      if (query.id === appointment_id) {
+        this.querys[index] = { ...query, ...appointment }
+      }
+    })
+    return appointment
+  }
 
   async findAllQuers() {
     const querys = this.querys
