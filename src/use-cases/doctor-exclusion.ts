@@ -1,6 +1,6 @@
-import { Doctor } from '@/models/Doctor'
 import { DoctorRepository } from '@/repositories/doctor-repository'
 import { ResouceNotFoundError } from './errors/resource-not-found-error'
+import { Doctor } from '@prisma/client'
 
 interface exclusionOfDoctorsUseCaseRequest {
   id: string

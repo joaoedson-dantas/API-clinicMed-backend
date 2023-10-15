@@ -1,12 +1,14 @@
-import { Doctor } from '@/models/Doctor'
+/* import { Doctor } from '@/models/Doctor' */
 import { AddressRepository } from '@/repositories/address-repository'
 import { DoctorRepository } from '@/repositories/doctor-repository'
 import { ResouceNotFoundError } from './errors/resource-not-found-error'
+import { Doctor, Specialty } from '@prisma/client'
 
 interface DoctorUpdateUseCaseRequest {
   id: string
   name: string
   tel?: string
+  specialty: Specialty
   address: {
     road: string
     district: string
