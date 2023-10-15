@@ -1,16 +1,15 @@
-/* import { Patient } from '@/models/Patient' */
 import { Patient } from '@prisma/client'
 import { PatientRepository } from '../patient-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaPatientrepository implements PatientRepository {
   async inactivate(idPatient: string): Promise<Patient> {
-    const updatedDoctor = await prisma.patient.update({
+    const updatedPatient = await prisma.patient.update({
       where: { id: idPatient },
       data: { activated: false },
     })
 
-    return updatedDoctor
+    return updatedPatient
   }
 
   async update(data: Omit<Patient, 'email' | 'cpf' | 'activated'>) {

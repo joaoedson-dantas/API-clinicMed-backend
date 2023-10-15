@@ -38,9 +38,11 @@ ClinicMed
 - [x] O sistema deve permitir um agendamento de consulta;
     ->  Para agendamento de consulta será necessário ao menos um paciente, um médico, data e hora da consulta
 
+- [x] O sistema deve permitir a busca por uma consulta pelo ID
+    ->  Para a busca da cnsulta, o sistema deve devolvedor uma consulta com todas suas informações, deve conster informações do médico como nome, crm e id, deve conter informações do paciente, contendo informações como nome, cpf e id.
+
 - [x] O sistema deve permitir um cancelamento de consulta.
     ->  Para cancelamento de consulta é necessário a consulta a ser cancelada e o motivo 
-
 
 
 
