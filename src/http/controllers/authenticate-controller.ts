@@ -17,9 +17,21 @@ export async function authenticate(
   try {
     // instaciando o caso de uso e passando as dependencias por parametro
     const authenticateUseCase = makeAuthenticateUseCase()
-    await authenticateUseCase.execute({
+    const { user } = await authenticateUseCase.execute({
       login,
       password,
+    })
+
+    const token = await reply.jwtSign(
+      {},
+      {
+        sign: {
+          sub: user.id,
+        },
+      },
+    )
+    return reply.status(200).send({
+      token,
     })
   } catch (err) {
     if (err instanceof InvalidCredentialsError) {
@@ -28,6 +40,4 @@ export async function authenticate(
 
     throw err
   }
-
-  return reply.status(200).send()
 }
