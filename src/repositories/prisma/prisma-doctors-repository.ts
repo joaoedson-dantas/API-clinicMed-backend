@@ -1,14 +1,71 @@
-import { Doctor } from '@prisma/client'
+import { $Enums, Doctor } from '@prisma/client'
 import { DoctorRepository } from '../doctor-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaDoctorRepository implements DoctorRepository {
+  async activeDoctor(doctorId: string) {
+    const doctor = await prisma.doctor.findUnique({
+      where: {
+        id: doctorId,
+      },
+    })
+
+    if (!doctor) {
+      throw new Error('Médico não encontrado')
+    }
+
+    return doctor.activated
+  }
+
+  async findAllActiveDoctorsBySpecialty(specialty: $Enums.Specialty) {
+    const activeDoctorsBySpecialty = await prisma.doctor.findMany({
+      where: { activated: true, specialty },
+      select: {
+        name: true,
+        email: true,
+        crm: true,
+        specialty: true,
+        activated: true,
+        id: true,
+      },
+    })
+    return activeDoctorsBySpecialty
+  }
+
   async findManyAllDoctorsActived() {
-    throw new Error('Method not implemented.')
+    const doctorsActived = await prisma.doctor.findMany({
+      where: {
+        activated: true,
+      },
+      select: {
+        name: true,
+        email: true,
+        crm: true,
+        specialty: true,
+        activated: true,
+        id: true,
+      },
+    })
+
+    return doctorsActived
   }
 
   async updateDoctorWithQuery(doctorId: string, queryId: string) {
-    throw new Error('Method not implemented.')
+    const updateDoctor = await prisma.doctor.update({
+      where: {
+        id: doctorId,
+      },
+      data: {
+        querys: {
+          connect: [{ id: queryId }],
+        },
+      },
+    })
+
+    if (!updateDoctor) {
+      throw new Error('medico não encontrado')
+    }
+    return updateDoctor
   }
 
   async inactivate(idDoctor: string) {
