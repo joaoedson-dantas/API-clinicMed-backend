@@ -25,9 +25,6 @@ export class PrismaQueryRepository implements QueryMedRepository {
         },
       },
     })
-    if (!queryOnSameDate) {
-      return null
-    }
     return queryOnSameDate
   }
 

@@ -1,6 +1,6 @@
 import { expect, describe, it, beforeEach, afterEach } from 'vitest'
 import { InMemoryQuerysMedRepository } from '@/repositories/in-memory/in-memory-querys-repository'
-import { QueryMedUseCase } from './query-med'
+import { AppointmentMedUseCase } from './appointment-med'
 import { InMemoryPatientRepository } from '@/repositories/in-memory/in-memory-patient-repository'
 import { RegisterPatientUseCase } from './register-patient'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
@@ -9,7 +9,7 @@ import dayjs from 'dayjs'
 import { Specialty } from '@/models/Doctor'
 
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
-import { Cancellation } from '@prisma/client'
+
 import { AppointmentWithDoctorAndPatientUseCase } from './get-appointment-with-doctor-and-patient'
 
 let querysMedRepository: InMemoryQuerysMedRepository
@@ -19,7 +19,7 @@ let doctorsRepository: InMemoryDoctorRepository
 let patientCreated: RegisterPatientUseCase
 
 let sut: AppointmentWithDoctorAndPatientUseCase
-let queryCreated: QueryMedUseCase
+let queryCreated: AppointmentMedUseCase
 
 describe('Appointment With Doctor And Patient Use Case', () => {
   beforeEach(async () => {
@@ -37,7 +37,7 @@ describe('Appointment With Doctor And Patient Use Case', () => {
       addressRepository,
     )
 
-    queryCreated = new QueryMedUseCase(
+    queryCreated = new AppointmentMedUseCase(
       querysMedRepository,
       patientRepository,
       doctorsRepository,

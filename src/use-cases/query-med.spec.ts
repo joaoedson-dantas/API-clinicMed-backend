@@ -1,6 +1,6 @@
 import { expect, describe, it, beforeEach, afterEach } from 'vitest'
 import { InMemoryQuerysMedRepository } from '@/repositories/in-memory/in-memory-querys-repository'
-import { QueryMedUseCase } from './query-med'
+import { AppointmentMedUseCase } from './appointment-med'
 import { InMemoryPatientRepository } from '@/repositories/in-memory/in-memory-patient-repository'
 import { RegisterPatientUseCase } from './register-patient'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
@@ -17,7 +17,7 @@ let addressRepository: InMemoryAddressRepository
 let doctorsRepository: InMemoryDoctorRepository
 let patientCreated: RegisterPatientUseCase
 
-let sut: QueryMedUseCase
+let sut: AppointmentMedUseCase
 
 describe('query med Use Case', () => {
   beforeEach(async () => {
@@ -25,7 +25,7 @@ describe('query med Use Case', () => {
     patientRepository = new InMemoryPatientRepository()
     addressRepository = new InMemoryAddressRepository()
     doctorsRepository = new InMemoryDoctorRepository()
-    sut = new QueryMedUseCase(
+    sut = new AppointmentMedUseCase(
       querysMedRepository,
       patientRepository,
       doctorsRepository,

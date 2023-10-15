@@ -1,6 +1,5 @@
 import { expect, describe, it, beforeEach, afterEach } from 'vitest'
 import { InMemoryQuerysMedRepository } from '@/repositories/in-memory/in-memory-querys-repository'
-import { QueryMedUseCase } from './query-med'
 import { InMemoryPatientRepository } from '@/repositories/in-memory/in-memory-patient-repository'
 import { RegisterPatientUseCase } from './register-patient'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
@@ -11,6 +10,7 @@ import { Specialty } from '@/models/Doctor'
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 import { AppointmentCancellationUseCase } from './ appointment-cancellation'
 import { Cancellation } from '@prisma/client'
+import { AppointmentMedUseCase } from './appointment-med'
 
 let querysMedRepository: InMemoryQuerysMedRepository
 let patientRepository: InMemoryPatientRepository
@@ -19,7 +19,7 @@ let doctorsRepository: InMemoryDoctorRepository
 let patientCreated: RegisterPatientUseCase
 
 let sut: AppointmentCancellationUseCase
-let queryCreated: QueryMedUseCase
+let queryCreated: AppointmentMedUseCase
 
 describe('Appointment Cancellation Use Case', () => {
   beforeEach(async () => {
@@ -33,7 +33,7 @@ describe('Appointment Cancellation Use Case', () => {
       addressRepository,
     )
 
-    queryCreated = new QueryMedUseCase(
+    queryCreated = new AppointmentMedUseCase(
       querysMedRepository,
       patientRepository,
       doctorsRepository,

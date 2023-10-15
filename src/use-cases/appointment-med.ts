@@ -11,18 +11,18 @@ import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import dayjs from 'dayjs'
 import { PatientAppointmentSameDate } from './errors/ patient-appointment-same-date'
 
-interface QueryMedUseCaseRequest {
+interface AppointmentMedUseCaseRequest {
   patientCPF: string
   doctorId?: string
   start_time: Date
   specialty: Specialty
 }
 
-interface QueryMedUseCaseResponse {
+interface AppointmentMedUseCaseResponse {
   query: Query
 }
 
-export class QueryMedUseCase {
+export class AppointmentMedUseCase {
   constructor(
     private querysMedRepository: QueryMedRepository,
     private patientsRepository: PatientRepository,
@@ -34,7 +34,7 @@ export class QueryMedUseCase {
     specialty,
     start_time,
     doctorId,
-  }: QueryMedUseCaseRequest): Promise<QueryMedUseCaseResponse> {
+  }: AppointmentMedUseCaseRequest): Promise<AppointmentMedUseCaseResponse> {
     // verificando se a clinica está aberta para o horario de consulta solicitado
 
     if (!specialty && doctorId) {
