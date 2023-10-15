@@ -27,11 +27,7 @@ describe('Appointment Cancellation Use Case', () => {
     patientRepository = new InMemoryPatientRepository()
     addressRepository = new InMemoryAddressRepository()
     doctorsRepository = new InMemoryDoctorRepository()
-    sut = new AppointmentCancellationUseCase(
-      querysMedRepository,
-      patientRepository,
-      doctorsRepository,
-    )
+    sut = new AppointmentCancellationUseCase(querysMedRepository)
     patientCreated = new RegisterPatientUseCase(
       patientRepository,
       addressRepository,
@@ -110,7 +106,8 @@ describe('Appointment Cancellation Use Case', () => {
   it('should be possible to cancel an appointment', async () => {
     vi.setSystemTime(new Date(2023, 9, 10, 13, 0, 0))
 
-    const appointmentTime = dayjs(new Date()).add(31, 'minute')
+    const appointmentTime = dayjs(new Date()).add(31, 'minutes')
+
     const { query } = await queryCreated.execute({
       patientCPF: '04005103324',
       specialty: 'CARDIOLOGIA',
@@ -119,9 +116,11 @@ describe('Appointment Cancellation Use Case', () => {
 
     expect(query.start_time).toEqual(expect.any(Date))
 
+    const appointmentCancellationTime = dayjs(new Date()).subtract(24, 'hour')
     const { appointmentCancellation } = await sut.execute({
       appointment_id: query.id,
       reason_cancellation: 'MEDICO_CANCELOU',
+      cancellation_date: appointmentCancellationTime.toDate(),
     })
 
     expect(appointmentCancellation.reason_cancellation).toEqual(
@@ -140,9 +139,21 @@ describe('Appointment Cancellation Use Case', () => {
       start_time: appointmentTime.toDate(),
     })
 
+    // cancelamento com menos de 24 de antecedencia
+    const appointmentCancellationTime = dayjs(new Date()).subtract(23, 'hour')
     await expect(() =>
       sut.execute({
         appointment_id: query.id,
+        cancellation_date: appointmentCancellationTime.toDate(),
+      }),
+    ).rejects.toBeInstanceOf(Error)
+
+    // cancelamento com id inexistente
+    const appointmentCancellationTime2 = dayjs(new Date()).subtract(25, 'hour')
+    await expect(() =>
+      sut.execute({
+        appointment_id: '24234234234',
+        cancellation_date: appointmentCancellationTime2.toDate(),
       }),
     ).rejects.toBeInstanceOf(Error)
   })

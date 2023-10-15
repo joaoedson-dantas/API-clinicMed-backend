@@ -278,8 +278,6 @@ describe('query med Use Case', () => {
       start_time: appointmentTime.toDate(),
     })
 
-    console.log(query)
-
     expect(query.specialty).toEqual(Specialty.GINECOLOGIA)
   })
 

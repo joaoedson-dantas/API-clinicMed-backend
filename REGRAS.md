@@ -69,8 +69,8 @@ ClinicMed
 - [x] A escolha do médico é opcional, sendo que nesse caso o sistema deve escolher aleatoriamente algum médico disponível na data/hora preenchida.
 - [x] A escolha do médico deve ser com base na especialidade do medico
 
-- [ ] É obrigatório informar o motivo do cancelamento da consulta, dentre as opções: paciente desistiu, médico cancelou ou outros;
-- [ ] Uma consulta somente poderá ser cancelada com antecedência mínima de 24 horas.
+- [x] É obrigatório informar o motivo do cancelamento da consulta, dentre as opções: paciente desistiu, médico cancelou ou outros;
+- [x] Uma consulta somente poderá ser cancelada com antecedência mínima de 24 horas.
 
 
 
