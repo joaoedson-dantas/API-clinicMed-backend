@@ -21,7 +21,7 @@ let patientCreated: RegisterPatientUseCase
 let sut: AppointmentCancellationUseCase
 let queryCreated: QueryMedUseCase
 
-describe('query med Use Case', () => {
+describe('Appointment Cancellation Use Case', () => {
   beforeEach(async () => {
     querysMedRepository = new InMemoryQuerysMedRepository()
     patientRepository = new InMemoryPatientRepository()
@@ -124,36 +124,26 @@ describe('query med Use Case', () => {
       reason_cancellation: 'MEDICO_CANCELOU',
     })
 
-    console.log(appointmentCancellation)
-
     expect(appointmentCancellation.reason_cancellation).toEqual(
       Cancellation.MEDICO_CANCELOU,
     )
   })
 
-  /* it('must be possible to schedule a medical appointment according to the past specialty.', async () => {
+  it('should not be possible to cancel a medical appointment', async () => {
     vi.setSystemTime(new Date(2023, 9, 10, 13, 0, 0))
 
     const appointmentTime = dayjs(new Date()).add(31, 'minute')
 
-    await doctorsRepository.create({
-      name: `joaozinho`,
-      email: `joaozinho2@gmail.com`,
-      activated: true,
-      crm: `23443`,
-      specialty: Specialty.GINECOLOGIA,
-      tel: '85992002329',
-      addressId: '123',
-    })
-
     const { query } = await queryCreated.execute({
       patientCPF: '04005103324',
-      specialty: 'GINECOLOGIA',
+      specialty: 'CARDIOLOGIA',
       start_time: appointmentTime.toDate(),
     })
 
-    console.log(query)
-
-    expect(query.specialty).toEqual(Specialty.GINECOLOGIA)
-  }) */
+    await expect(() =>
+      sut.execute({
+        appointment_id: query.id,
+      }),
+    ).rejects.toBeInstanceOf(Error)
+  })
 })

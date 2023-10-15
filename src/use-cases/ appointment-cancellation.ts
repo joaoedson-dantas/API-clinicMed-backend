@@ -5,7 +5,7 @@ import { Cancellation, Query } from '@prisma/client'
 
 interface AppointmentCancellationUseCaseRequest {
   appointment_id: string
-  reason_cancellation: Cancellation
+  reason_cancellation?: Cancellation
 }
 
 interface AppointmentCancellationUseCaseResponse {
@@ -25,6 +25,12 @@ export class AppointmentCancellationUseCase {
   }: AppointmentCancellationUseCaseRequest): Promise<AppointmentCancellationUseCaseResponse> {
     // verificando se a consuta existe no sistema.
 
+    if (!reason_cancellation) {
+      throw new Error(
+        'Para cancelar uma consulta é necessário informar o motivo do cancelamento',
+      )
+    }
+
     const appointment = await this.querysMedRepository.findById(appointment_id)
 
     if (!appointment) {
@@ -40,9 +46,7 @@ export class AppointmentCancellationUseCase {
       )
 
     if (!appointmentCancellation?.reason_cancellation) {
-      throw new Error(
-        'Erro ao cancelar a consuta, é necessário informar o motivo do cancelamento',
-      )
+      throw new Error('Erro ao cancelar a consuta')
     }
 
     return { appointmentCancellation }
