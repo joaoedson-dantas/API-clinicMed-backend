@@ -38,7 +38,7 @@ ClinicMed
 - [x] O sistema deve permitir um agendamento de consulta;
     ->  Para agendamento de consulta será necessário ao menos um paciente, um médico, data e hora da consulta
 
-- [ ] O sistema deve permitir um cancelamento de consulta.
+- [x] O sistema deve permitir um cancelamento de consulta.
     ->  Para cancelamento de consulta é necessário a consulta a ser cancelada e o motivo 
 
 

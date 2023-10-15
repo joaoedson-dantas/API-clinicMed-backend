@@ -60,7 +60,6 @@ export class InMemoryQuerysMedRepository implements QueryMedRepository {
       }
       return false
     })
-
     return hasConflict
   }
 
