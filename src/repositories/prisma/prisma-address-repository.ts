@@ -3,8 +3,17 @@ import { AddressRepository } from '../address-repository'
 import { prisma } from '@/lib/prisma'
 
 export class PrismaAddressRepository implements AddressRepository {
-  update(data: Address): Promise<Address> {
-    throw new Error('Method not implemented.')
+  async update({ id, ...dataUpdated }: Address): Promise<Address> {
+    const address = await prisma.address.update({
+      where: {
+        id,
+      },
+      data: {
+        id,
+        ...dataUpdated,
+      },
+    })
+    return address
   }
 
   async create(data: Address): Promise<Address> {
