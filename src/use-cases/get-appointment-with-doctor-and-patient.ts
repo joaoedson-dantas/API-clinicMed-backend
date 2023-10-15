@@ -5,8 +5,16 @@ import { Cancellation, Specialty } from '@prisma/client'
 
 interface AppointmentWithDoctorAndPatient {
   appointment_id: string
-  doctor_name: string
-  patient_name: string
+  doctor: {
+    id: string
+    name: string
+    crm: string
+  }
+  patient: {
+    id: string
+    name: string
+    cpf: string
+  }
   created_at: Date
   start_time: Date
   end_time: Date
@@ -54,18 +62,23 @@ export class AppointmentWithDoctorAndPatientUseCase {
       throw new Error('Erro ao buscar o médico')
     }
 
-    if (!patient) {
+    if (!patient?.id) {
       throw new Error('Erro ao buscar o paciente')
     }
 
-    const doctor_name = doctor.name
-    const patient_name = patient.name
-
-    const appointment = {
+    const appointment: GetAppointmentWithDoctorAndPatientUseCaseResponse = {
       appointment: {
         appointment_id: appointmentByID.id,
-        doctor_name,
-        patient_name,
+        doctor: {
+          id: doctor.id,
+          name: doctor.name,
+          crm: doctor.crm,
+        },
+        patient: {
+          id: patient.id,
+          name: patient.name,
+          cpf: patient.cpf,
+        },
         created_at: appointmentByID.created_at,
         start_time: appointmentByID.start_time,
         end_time: appointmentByID.end_time,
