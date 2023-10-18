@@ -3,7 +3,7 @@ import { z } from 'zod'
 import { Cancellation } from '@prisma/client'
 import { makeAppointmentCancellationUseCase } from '@/use-cases/factories/make- appointment-cancellation'
 
-export async function AppointmentCancellation(
+export async function appointmentCancellation(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
