@@ -4,8 +4,6 @@ import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doc
 import { RegisterDoctorUseCase } from './register-doctor'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
 
-import { UserAlreadyExistsError } from './errors/user-already-exists-error'
-
 let doctorsRepository: InMemoryDoctorRepository
 let addressRepository: InMemoryAddressRepository
 let sut: RegisterDoctorUseCase
@@ -22,7 +20,7 @@ describe('Register Doctor Use Case', () => {
       name: 'Leia',
       email: 'leialb28@gmail.com',
       activated: true,
-      crm: '5432',
+      crm: '1235-ce',
       specialty: 'CARDIOLOGIA',
       tel: '85992002329',
       address: {

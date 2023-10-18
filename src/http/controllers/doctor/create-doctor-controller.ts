@@ -1,6 +1,5 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
-import { UserAlreadyExistsError } from '@/use-cases/errors/user-already-exists-error'
 import { Specialty } from '@prisma/client'
 import { makeRegisterDoctorUseCase } from '@/use-cases/factories/make-register-doctor-use-case'
 
@@ -47,7 +46,6 @@ export async function createDoctor(
   })
   const { name, email, tel, crm, address, specialty, activated } =
     createDoctorBodySchema.parse(request.body)
-
   try {
     const DoctorMedUseCase = makeRegisterDoctorUseCase()
     await DoctorMedUseCase.execute({
@@ -61,9 +59,9 @@ export async function createDoctor(
     })
   } catch (err) {
     if (err instanceof Error) {
+      console.log(err.message)
       return reply.status(409).send({ message: err.message })
     }
   }
-
   return reply.status(201).send()
 }
