@@ -13,12 +13,10 @@ export async function exclusionOfDoctor(
   const { id, activated } = exclusionOfDoctorBodySchema.parse(request.body)
 
   const getListDoctorsUseCase = makeDoctorExclusionUseCase()
-  const { doctor } = await getListDoctorsUseCase.execute({
+  await getListDoctorsUseCase.execute({
     id,
     activated,
   })
 
-  return reply.status(201).send({
-    doctor,
-  })
+  return reply.status(204).send()
 }
