@@ -49,8 +49,6 @@ export async function createDoctor(
     createDoctorBodySchema.parse(request.body)
 
   try {
-    // instaciando o caso de uso e passando as dependencias por parametro
-
     const DoctorMedUseCase = makeRegisterDoctorUseCase()
     await DoctorMedUseCase.execute({
       name,
@@ -62,7 +60,7 @@ export async function createDoctor(
       activated,
     })
   } catch (err) {
-    if (err instanceof UserAlreadyExistsError) {
+    if (err instanceof Error) {
       return reply.status(409).send({ message: err.message })
     }
   }

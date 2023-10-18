@@ -2,6 +2,9 @@ import { DoctorRepository } from '@/repositories/doctor-repository'
 import { PatientRepository } from '@/repositories/patient-repository'
 import { QueryMedRepository } from '@/repositories/query-med-repository'
 import { Cancellation, Specialty } from '@prisma/client'
+import { AppointmentNotFound } from './errors/appointment-not-found-error'
+import { DoctorNotFound } from './errors/doctor-not-found-error'
+import { PatientNotFound } from './errors/patient-not-found-error'
 
 interface AppointmentWithDoctorAndPatient {
   appointment_id: string
@@ -46,9 +49,7 @@ export class AppointmentWithDoctorAndPatientUseCase {
       await this.querysMedRepository.findById(appointment_id)
 
     if (!appointmentByID) {
-      throw new Error(
-        'Id da consulta inválido: consulta não encontrada no nosso sistma',
-      )
+      throw new AppointmentNotFound()
     }
 
     const doctor = await this.doctorRepository.findById(
@@ -59,11 +60,11 @@ export class AppointmentWithDoctorAndPatientUseCase {
     )
 
     if (!doctor) {
-      throw new Error('Erro ao buscar o médico')
+      throw new DoctorNotFound()
     }
 
     if (!patient?.id) {
-      throw new Error('Erro ao buscar o paciente')
+      throw new PatientNotFound()
     }
 
     const appointment: GetAppointmentWithDoctorAndPatientUseCaseResponse = {

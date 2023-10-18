@@ -10,6 +10,7 @@ import { DoctorUnavailableOnTime } from './errors/doctor-unavailable-on-time'
 import { UserAlreadyExistsError } from './errors/user-already-exists-error'
 import dayjs from 'dayjs'
 import { PatientAppointmentSameDate } from './errors/ patient-appointment-same-date'
+import { DoctorWithoutSpecialty } from './errors/doctor-without-specialty-error'
 
 interface AppointmentMedUseCaseRequest {
   patientCPF: string
@@ -38,9 +39,7 @@ export class AppointmentMedUseCase {
     // verificando se a clinica está aberta para o horario de consulta solicitado
 
     if (!specialty && doctorId) {
-      throw new Error(
-        'É necessário especificar a especialidade quando não é passado um médico',
-      )
+      throw new DoctorWithoutSpecialty()
     }
 
     const clinicOpen = isConsultationWithinSchedule(start_time)
