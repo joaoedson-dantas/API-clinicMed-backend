@@ -3,7 +3,9 @@ import { expect, describe, it, beforeEach } from 'vitest'
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 import { InMemoryAddressRepository } from '@/repositories/in-memory/in-memory-address-repository'
 import { DoctorUpdateUseCase } from './doctor-update'
-import { ResouceNotFoundError } from './errors/resource-not-found-error'
+
+import { DoctorNotFound } from './errors/doctor-not-found-error'
+import { Specialty } from '@/models/Doctor'
 
 let doctorsRepository: InMemoryDoctorRepository
 let addressRepository: InMemoryAddressRepository
@@ -30,7 +32,7 @@ describe('doctor update use case', () => {
       email: `zelia$@gmail.com`,
       activated: true,
       crm: `4362$`,
-      specialty: 'ortopedia',
+      specialty: Specialty.CARDIOLOGIA,
       tel: '85992002329',
       addressId: address.id,
     })
@@ -50,6 +52,7 @@ describe('doctor update use case', () => {
         uf: 'AM',
         zip_code: '504393',
       },
+      specialty: Specialty.CARDIOLOGIA,
     })
 
     expect(doctor.addressId).toEqual(addressId)
@@ -70,7 +73,8 @@ describe('doctor update use case', () => {
           uf: 'AM',
           zip_code: '504393',
         },
+        specialty: Specialty.CARDIOLOGIA,
       }),
-    ).rejects.toBeInstanceOf(ResouceNotFoundError)
+    ).rejects.toBeInstanceOf(DoctorNotFound)
   })
 })

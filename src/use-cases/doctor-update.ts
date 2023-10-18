@@ -1,8 +1,8 @@
 /* import { Doctor } from '@/models/Doctor' */
 import { AddressRepository } from '@/repositories/address-repository'
 import { DoctorRepository } from '@/repositories/doctor-repository'
-import { ResouceNotFoundError } from './errors/resource-not-found-error'
 import { Doctor, Specialty } from '@prisma/client'
+import { DoctorNotFound } from './errors/doctor-not-found-error'
 
 interface DoctorUpdateUseCaseRequest {
   id: string
@@ -37,7 +37,7 @@ export class DoctorUpdateUseCase {
 
     // Verificando se medico existe
     if (!doctorToBeUpdated) {
-      throw new ResouceNotFoundError()
+      throw new DoctorNotFound()
     }
 
     // atualizando o endereço
