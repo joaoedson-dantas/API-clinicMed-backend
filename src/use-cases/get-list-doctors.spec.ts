@@ -1,6 +1,7 @@
 import { describe, it, beforeEach, expect } from 'vitest'
 import { InMemoryDoctorRepository } from '@/repositories/in-memory/in-memory-doctors-repository'
 import { GetListDoctorsUseCase } from './ get-list-doctors'
+import { Specialty } from '@/models/Doctor'
 
 let doctorsRepository: InMemoryDoctorRepository
 
@@ -17,7 +18,7 @@ describe('Get list doctors use case', () => {
         email: `leialb2${i}@gmail.com`,
         activated: true,
         crm: `4362${i}`,
-        specialty: 'ortopedia',
+        specialty: Specialty.CARDIOLOGIA,
         tel: '85992002329',
         addressId: '123',
       })
@@ -28,7 +29,7 @@ describe('Get list doctors use case', () => {
       email: `xavier$@gmail.com`,
       activated: true,
       crm: `4362$`,
-      specialty: 'ortopedia',
+      specialty: Specialty.ORTOPEDIA,
       tel: '85992002329',
       addressId: '123',
     })
@@ -38,7 +39,7 @@ describe('Get list doctors use case', () => {
       email: `zelia$@gmail.com`,
       activated: true,
       crm: `4362$`,
-      specialty: 'ortopedia',
+      specialty: Specialty.ORTOPEDIA,
       tel: '85992002329',
       addressId: '123',
     })
@@ -48,7 +49,7 @@ describe('Get list doctors use case', () => {
       email: `zelia$@gmail.com`,
       activated: true,
       crm: `4362$`,
-      specialty: 'ortopedia',
+      specialty: Specialty.ORTOPEDIA,
       tel: '85992002329',
       addressId: '123',
     })

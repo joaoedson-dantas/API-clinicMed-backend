@@ -1,23 +1,24 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
 import { makeGetListDoctorsUseCase } from '@/use-cases/factories/make- get-list-doctors'
+import { FastifyRequest, FastifyReply } from 'fastify'
 
 export async function getListDoctors(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  const getListDoctorsBodySchema = z.object({
-    q: z.string(),
+  const getListDoctorsQuerySchema = z.object({
     page: z.coerce.number().min(1).default(1),
   })
-  const { page } = getListDoctorsBodySchema.parse(request.body)
+  console.log(getListDoctorsQuerySchema.parse(request.query))
+
+  const { page } = getListDoctorsQuerySchema.parse(request.query)
 
   const getListDoctorsUseCase = makeGetListDoctorsUseCase()
   const { doctorsOrder } = await getListDoctorsUseCase.execute({
     page,
   })
 
-  return reply.status(201).send({
+  return reply.status(200).send({
     doctorsOrder,
   })
 }
