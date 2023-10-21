@@ -8,6 +8,7 @@ interface RegisterPatientUseCaseRequest {
   email: string
   tel: string
   cpf: string
+  activated: boolean
   address: {
     road: string
     district: string
@@ -17,7 +18,6 @@ interface RegisterPatientUseCaseRequest {
     uf: string
     city: string
   }
-  activated: boolean
 }
 
 interface RegisterPatientUseCaseResponse {

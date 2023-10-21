@@ -9,7 +9,6 @@ export async function getListPatients(
   const getListPatietsQuerySchema = z.object({
     page: z.coerce.number().min(1).default(1),
   })
-  console.log(getListPatietsQuerySchema.parse(request.query))
 
   const { page } = getListPatietsQuerySchema.parse(request.query)
 

@@ -9,7 +9,6 @@ export async function getListDoctors(
   const getListDoctorsQuerySchema = z.object({
     page: z.coerce.number().min(1).default(1),
   })
-  console.log(getListDoctorsQuerySchema.parse(request.query))
 
   const { page } = getListDoctorsQuerySchema.parse(request.query)
 
