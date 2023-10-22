@@ -27,8 +27,6 @@ describe('Update Doctor (e2e) ', () => {
         },
       })
 
-    console.log(response.body.id)
-
     const updateResponse = await request(app.server)
       .put(`/doctor/${response.body.id}`)
       .set('Authorization', `Bearer ${token}`)
@@ -46,6 +44,7 @@ describe('Update Doctor (e2e) ', () => {
           number: '766',
         },
       })
+
     expect(updateResponse.statusCode).toEqual(204)
   })
 })

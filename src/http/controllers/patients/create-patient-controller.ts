@@ -39,7 +39,7 @@ export async function createPatient(
 
   try {
     const RegisterPatientUseCase = makeRegisterPatientUseCase()
-    await RegisterPatientUseCase.execute({
+    const { patient } = await RegisterPatientUseCase.execute({
       name,
       email,
       cpf,
@@ -47,10 +47,12 @@ export async function createPatient(
       activated,
       address,
     })
+    return reply
+      .status(201)
+      .send({ id: patient.id, activated: patient.activated })
   } catch (err) {
     if (err instanceof Error) {
       return reply.status(409).send({ message: err.message })
     }
   }
-  return reply.status(204).send()
 }

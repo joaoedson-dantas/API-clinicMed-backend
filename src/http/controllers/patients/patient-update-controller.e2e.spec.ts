@@ -10,8 +10,8 @@ describe('Update Patient (e2e) ', () => {
       .post('/patient')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        name: 'João Edson Dantas',
-        email: 'joao12344@gmail.com',
+        name: 'João Edson Dantas Silva',
+        email: 'aa12344@gmail.com',
         cpf: '14005607899',
         activated: true,
         tel: '85981049297',
@@ -26,7 +26,7 @@ describe('Update Patient (e2e) ', () => {
         },
       })
 
-    await request(app.server)
+    const updateResponse = await request(app.server)
       .put(`/patient/${response.body.id}`)
       .set('Authorization', `Bearer ${token}`)
       .send({
@@ -43,6 +43,6 @@ describe('Update Patient (e2e) ', () => {
         },
       })
 
-    expect(response.statusCode).toEqual(204)
+    expect(updateResponse.statusCode).toEqual(204)
   })
 })

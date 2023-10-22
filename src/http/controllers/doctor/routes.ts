@@ -12,5 +12,5 @@ export async function doctorRoutes(app: FastifyInstance) {
   app.post('/doctor', createDoctor)
   app.put('/doctor/:id', updateDoctor)
 
-  app.delete('/doctor', exclusionOfDoctor)
+  app.delete('/doctor/:id', exclusionOfDoctor)
 }

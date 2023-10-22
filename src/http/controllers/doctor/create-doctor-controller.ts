@@ -58,7 +58,9 @@ export async function createDoctor(
       activated,
     })
 
-    return reply.status(201).send({ id: doctor.id })
+    return reply
+      .status(201)
+      .send({ id: doctor.id, activated: doctor.activated })
   } catch (err) {
     if (err instanceof Error) {
       return reply.status(409).send({ message: err.message })

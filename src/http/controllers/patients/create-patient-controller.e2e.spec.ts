@@ -26,6 +26,6 @@ describe('Create Patient (e2e) ', () => {
         },
       })
 
-    expect(response.statusCode).toEqual(204)
+    expect(response.statusCode).toEqual(201)
   })
 })

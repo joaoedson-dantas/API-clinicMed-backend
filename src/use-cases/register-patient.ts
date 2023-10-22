@@ -53,7 +53,7 @@ export class RegisterPatientUseCase {
 
     const { id } = await this.addressRepository.create(address)
 
-    const patient = await this.patientsRepository.create({
+    await this.patientsRepository.create({
       name,
       email,
       tel,
@@ -62,6 +62,11 @@ export class RegisterPatientUseCase {
       cpf,
       created_at: new Date(),
     })
+    const patient = await this.patientsRepository.findByCPF(cpf)
+
+    if (!patient) {
+      throw new Error('Error ao criar o paciente')
+    }
 
     return { patient }
   }
