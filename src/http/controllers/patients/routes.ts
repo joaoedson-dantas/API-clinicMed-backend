@@ -9,5 +9,5 @@ export async function patientRoutes(app: FastifyInstance) {
 
   app.get('/patients', getListPatients)
   app.post('/patient', createPatient)
-  app.put('/patient:id', updatePatient)
+  app.put('/patient/:id', updatePatient)
 }

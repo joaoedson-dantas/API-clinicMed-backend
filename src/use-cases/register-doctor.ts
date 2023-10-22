@@ -54,7 +54,7 @@ export class RegisterDoctorUseCase {
 
     const createdAdrress = await this.addressRepository.create(address)
 
-    const doctor = await this.doctorsRepository.create({
+    await this.doctorsRepository.create({
       name,
       email,
       tel,
@@ -63,6 +63,11 @@ export class RegisterDoctorUseCase {
       activated,
       addressId: createdAdrress.id,
     })
+    const doctor = await this.doctorsRepository.findByCrm(crm)
+
+    if (!doctor) {
+      throw new Error('Medico não cadastrado test')
+    }
 
     return { doctor }
   }

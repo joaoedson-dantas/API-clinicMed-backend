@@ -1,10 +1,8 @@
-import { FastifyRequest, FastifyReply } from 'fastify'
-import { z } from 'zod'
-
-import { Specialty } from '@prisma/client'
-
-import { makeDoctorUpdateUseCase } from '@/use-cases/factories/make-doctor-update'
 import { DoctorNotFound } from '@/use-cases/errors/doctor-not-found-error'
+import { makeDoctorUpdateUseCase } from '@/use-cases/factories/make-doctor-update'
+import { Specialty } from '@prisma/client'
+import { FastifyReply, FastifyRequest } from 'fastify'
+import { z } from 'zod'
 
 export async function updateDoctor(
   request: FastifyRequest,
@@ -21,7 +19,6 @@ export async function updateDoctor(
   })
 
   const updateDoctorBodySchema = z.object({
-    id: z.string(),
     name: z.string(),
     tel: z.string().refine(
       (phoneNumber) => {
@@ -35,10 +32,15 @@ export async function updateDoctor(
     ),
     address: addressSchema,
     specialty: z.nativeEnum(Specialty),
-    activated: z.boolean(),
   })
 
-  const { id, name, tel, address, specialty } = updateDoctorBodySchema.parse(
+  const { id } = z
+    .object({
+      id: z.string(),
+    })
+    .parse(request.params)
+
+  const { name, tel, address, specialty } = updateDoctorBodySchema.parse(
     request.body,
   )
 
@@ -54,6 +56,7 @@ export async function updateDoctor(
     return reply.status(204).send()
   } catch (err) {
     if (err instanceof DoctorNotFound) {
+      console.log(err.message)
       return reply.status(400).send({ message: err.message })
     }
   }

@@ -8,8 +8,9 @@ import { exclusionOfDoctor } from './doctor-exclusion-controller'
 export async function doctorRoutes(app: FastifyInstance) {
   app.addHook('onRequest', verifyJWT) // middleware que vai fazer a verificação se as rotas estão autenticadas
 
-  app.get('/doctors:page', getListDoctors)
+  app.get('/doctors', getListDoctors)
   app.post('/doctor', createDoctor)
-  app.put('/doctor', updateDoctor)
+  app.put('/doctor/:id', updateDoctor)
+
   app.delete('/doctor', exclusionOfDoctor)
 }

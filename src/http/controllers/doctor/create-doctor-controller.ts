@@ -48,7 +48,7 @@ export async function createDoctor(
     createDoctorBodySchema.parse(request.body)
   try {
     const DoctorMedUseCase = makeRegisterDoctorUseCase()
-    await DoctorMedUseCase.execute({
+    const { doctor } = await DoctorMedUseCase.execute({
       name,
       email,
       tel,
@@ -57,10 +57,11 @@ export async function createDoctor(
       specialty,
       activated,
     })
+
+    return reply.status(201).send({ id: doctor.id })
   } catch (err) {
     if (err instanceof Error) {
       return reply.status(409).send({ message: err.message })
     }
   }
-  return reply.status(201).send()
 }
