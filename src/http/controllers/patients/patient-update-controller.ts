@@ -1,8 +1,9 @@
 import { FastifyRequest, FastifyReply } from 'fastify'
 import { z } from 'zod'
-import { makeRegisterPatientUseCase } from '@/use-cases/factories/make-register-patient-use-case'
+import { makePatientUpdateUseCase } from '@/use-cases/factories/make-patient-update-use-case'
+import { PatientNotFound } from '@/use-cases/errors/patient-not-found-error'
 
-export async function createPatient(
+export async function updatePatient(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
@@ -16,9 +17,8 @@ export async function createPatient(
     city: z.string(),
   })
 
-  const createPatientBodySchema = z.object({
+  const updatePatientBodySchema = z.object({
     name: z.string(),
-    email: z.string().email(),
     tel: z.string().refine(
       (phoneNumber) => {
         const regex = /^(\d{2})\d{8}$|^\d{2}\d{9}$/ // Formato: DDXXXXXXXX ou DDXXXXXXXXX (8 ou 9 dígitos)
@@ -29,28 +29,29 @@ export async function createPatient(
           'O número de celular brasileiro deve ter o formato DDXXXXXXXX ou DDXXXXXXXXX, onde D é um dígito e X é um dígito.',
       },
     ),
-    cpf: z.string().min(11).max(11),
-    activated: z.boolean(),
     address: addressSchema,
   })
 
-  const { name, email, tel, cpf, address, activated } =
-    createPatientBodySchema.parse(request.body)
+  const { id } = z
+    .object({
+      id: z.string(),
+    })
+    .parse(request.params)
+
+  const { name, tel, address } = updatePatientBodySchema.parse(request.body)
 
   try {
-    const RegisterPatientUseCase = makeRegisterPatientUseCase()
-    await RegisterPatientUseCase.execute({
+    const updatePatientUseCase = makePatientUpdateUseCase()
+    await updatePatientUseCase.execute({
+      id,
       name,
-      email,
-      cpf,
       tel,
-      activated,
       address,
     })
+    return reply.status(204).send()
   } catch (err) {
-    if (err instanceof Error) {
-      return reply.status(409).send({ message: err.message })
+    if (err instanceof PatientNotFound) {
+      return reply.status(400).send({ message: err.message })
     }
   }
-  return reply.status(204).send()
 }

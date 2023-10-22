@@ -49,9 +49,8 @@ describe('Get List Doctor (e2e) ', () => {
       })
 
     const response = await request(app.server)
-      .get('/doctors')
+      .get(`/doctors?page=1`)
       .set('Authorization', `Bearer ${token}`)
-      .query({ page: 1 })
       .send()
 
     expect(response.statusCode).toEqual(200)

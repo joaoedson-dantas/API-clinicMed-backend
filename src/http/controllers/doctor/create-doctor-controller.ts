@@ -59,7 +59,6 @@ export async function createDoctor(
     })
   } catch (err) {
     if (err instanceof Error) {
-      console.log(err.message)
       return reply.status(409).send({ message: err.message })
     }
   }

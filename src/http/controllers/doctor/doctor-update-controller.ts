@@ -44,19 +44,17 @@ export async function updateDoctor(
 
   try {
     const updateDoctorUseCase = makeDoctorUpdateUseCase()
-    const { doctor } = await updateDoctorUseCase.execute({
+    await updateDoctorUseCase.execute({
       id,
       name,
       tel,
       address,
       specialty,
     })
-    return reply.status(201).send({
-      doctor,
-    })
+    return reply.status(204).send()
   } catch (err) {
     if (err instanceof DoctorNotFound) {
-      return reply.status(409).send({ message: err.message })
+      return reply.status(400).send({ message: err.message })
     }
   }
 }
