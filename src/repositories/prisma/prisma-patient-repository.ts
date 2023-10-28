@@ -1,10 +1,11 @@
-import { Patient } from '@prisma/client'
+import { Patient, PrismaClient } from '@prisma/client'
 import { PatientRepository } from '../patient-repository'
-import { prisma } from '@/lib/prisma'
 
 export class PrismaPatientrepository implements PatientRepository {
+  constructor(private prisma: PrismaClient) {}
+
   async inactivate(idPatient: string): Promise<Patient> {
-    const updatedPatient = await prisma.patient.update({
+    const updatedPatient = await this.prisma.patient.update({
       where: { id: idPatient },
       data: { activated: false },
     })
@@ -15,7 +16,7 @@ export class PrismaPatientrepository implements PatientRepository {
   async update(data: Omit<Patient, 'email' | 'cpf' | 'activated'>) {
     const { id, ...dataUpdated } = data
 
-    const patientUpdated = await prisma.patient.update({
+    const patientUpdated = await this.prisma.patient.update({
       where: { id },
       data: dataUpdated,
     })
@@ -23,7 +24,7 @@ export class PrismaPatientrepository implements PatientRepository {
   }
 
   async findById(id: string) {
-    const patient = await prisma.patient.findUnique({
+    const patient = await this.prisma.patient.findUnique({
       where: {
         id,
       },
@@ -32,7 +33,7 @@ export class PrismaPatientrepository implements PatientRepository {
   }
 
   async findByEmail(email: string) {
-    const patient = prisma.patient.findUnique({
+    const patient = this.prisma.patient.findUnique({
       where: {
         email,
       },
@@ -41,7 +42,7 @@ export class PrismaPatientrepository implements PatientRepository {
   }
 
   async findByCPF(cpf: string) {
-    const patient = await prisma.patient.findUnique({
+    const patient = await this.prisma.patient.findUnique({
       where: {
         cpf,
       },
@@ -50,7 +51,7 @@ export class PrismaPatientrepository implements PatientRepository {
   }
 
   async findManyActivePatients(page: number) {
-    const patients = await prisma.patient.findMany({
+    const patients = await this.prisma.patient.findMany({
       where: {
         activated: true,
       },
@@ -72,7 +73,7 @@ export class PrismaPatientrepository implements PatientRepository {
   async create(data: Omit<Patient, 'id'>) {
     const { addressId, ...rest } = data
 
-    const patient = await prisma.patient.create({
+    const patient = await this.prisma.patient.create({
       data: {
         ...rest,
         address: {

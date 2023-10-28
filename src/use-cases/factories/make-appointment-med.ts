@@ -2,11 +2,13 @@ import { PrismaPatientrepository } from '@/repositories/prisma/prisma-patient-re
 import { PrismaQueryRepository } from '@/repositories/prisma/prisma-query-respository'
 import { PrismaDoctorRepository } from '@/repositories/prisma/prisma-doctors-repository'
 import { AppointmentMedUseCase } from '../appointment-med'
+import { Prisma } from '@/lib/prisma'
 
 export function makeAppointmentMedUseCase() {
-  const patientsRepository = new PrismaPatientrepository()
-  const doctorRepository = new PrismaDoctorRepository()
-  const querysMedRepository = new PrismaQueryRepository()
+  const prisma = new Prisma()
+  const patientsRepository = new PrismaPatientrepository(prisma)
+  const doctorRepository = new PrismaDoctorRepository(prisma)
+  const querysMedRepository = new PrismaQueryRepository(prisma)
   const useCase = new AppointmentMedUseCase(
     querysMedRepository,
     patientsRepository,

@@ -1,10 +1,10 @@
-import { $Enums, Doctor } from '@prisma/client'
+import { $Enums, Doctor, PrismaClient } from '@prisma/client'
 import { DoctorRepository } from '../doctor-repository'
-import { prisma } from '@/lib/prisma'
 
 export class PrismaDoctorRepository implements DoctorRepository {
+  constructor(private prisma: PrismaClient) {}
   async activeDoctor(doctorId: string) {
-    const doctor = await prisma.doctor.findUnique({
+    const doctor = await this.prisma.doctor.findUnique({
       where: {
         id: doctorId,
       },
@@ -18,7 +18,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   }
 
   async findAllActiveDoctorsBySpecialty(specialty: $Enums.Specialty) {
-    const activeDoctorsBySpecialty = await prisma.doctor.findMany({
+    const activeDoctorsBySpecialty = await this.prisma.doctor.findMany({
       where: { activated: true, specialty },
       select: {
         name: true,
@@ -33,7 +33,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   }
 
   async findManyAllDoctorsActived() {
-    const doctorsActived = await prisma.doctor.findMany({
+    const doctorsActived = await this.prisma.doctor.findMany({
       where: {
         activated: true,
       },
@@ -51,7 +51,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   }
 
   async updateDoctorWithQuery(doctorId: string, queryId: string) {
-    const updateDoctor = await prisma.doctor.update({
+    const updateDoctor = await this.prisma.doctor.update({
       where: {
         id: doctorId,
       },
@@ -69,7 +69,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   }
 
   async inactivate(idDoctor: string) {
-    const updatedDoctor = await prisma.doctor.update({
+    const updatedDoctor = await this.prisma.doctor.update({
       where: { id: idDoctor },
       data: { activated: false },
     })
@@ -82,7 +82,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   ) {
     const { id, ...dataUpdated } = data
 
-    const updatedDoctor = await prisma.doctor.update({
+    const updatedDoctor = await this.prisma.doctor.update({
       where: { id },
       data: dataUpdated,
     })
@@ -90,7 +90,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   }
 
   async findById(id: string): Promise<Doctor | null> {
-    const doctor = await prisma.doctor.findUnique({
+    const doctor = await this.prisma.doctor.findUnique({
       where: {
         id,
       },
@@ -99,7 +99,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   }
 
   async findManyDoctorsActived(page: number) {
-    const doctors = await prisma.doctor.findMany({
+    const doctors = await this.prisma.doctor.findMany({
       where: {
         activated: true,
       },
@@ -122,7 +122,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   async create(data: Doctor) {
     const { addressId, ...rest } = data
 
-    const doctor = await prisma.doctor.create({
+    const doctor = await this.prisma.doctor.create({
       data: {
         ...rest,
         address: {
@@ -134,7 +134,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   }
 
   async findByCrm(crm: string) {
-    const doctor = await prisma.doctor.findUnique({
+    const doctor = await this.prisma.doctor.findUnique({
       where: {
         crm,
       },
@@ -143,7 +143,7 @@ export class PrismaDoctorRepository implements DoctorRepository {
   }
 
   async findByEmail(email: string) {
-    const doctor = await prisma.doctor.findUnique({
+    const doctor = await this.prisma.doctor.findUnique({
       where: {
         email,
       },
