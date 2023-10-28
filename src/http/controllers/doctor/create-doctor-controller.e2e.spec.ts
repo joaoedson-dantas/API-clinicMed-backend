@@ -3,6 +3,13 @@ import { app } from '@/app'
 import { createAndAuthenticateUser } from '@/utils/test/create-and-authenticate-user'
 
 describe('Create Doctor (e2e) ', () => {
+  beforeAll(async () => {
+    await app.ready() // garantir que o app esteja pronto
+  })
+
+  afterAll(async () => {
+    await app.close()
+  })
   it('should be able to create a doctor', async () => {
     const { token } = await createAndAuthenticateUser(app)
 

@@ -12,15 +12,11 @@ export async function exclusionOfDoctor(
     })
     .parse(request.params)
 
-  console.log('tesntado se o id passou pela requisição -> ', id)
-
   const exclusionOfDoctorBodySchema = z.object({
     activated: z.boolean(),
   })
-  console.log('oi', exclusionOfDoctorBodySchema.parse(request.body))
 
   const { activated } = exclusionOfDoctorBodySchema.parse(request.body)
-  console.log('testando se actived está funcionado -> ', activated)
 
   const getListDoctorsUseCase = makeDoctorExclusionUseCase()
   await getListDoctorsUseCase.execute({

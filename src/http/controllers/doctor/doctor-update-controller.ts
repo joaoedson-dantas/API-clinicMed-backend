@@ -56,7 +56,6 @@ export async function updateDoctor(
     return reply.status(204).send()
   } catch (err) {
     if (err instanceof DoctorNotFound) {
-      console.log(err.message)
       return reply.status(400).send({ message: err.message })
     }
   }
