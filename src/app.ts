@@ -6,12 +6,22 @@ import { usersRoutes } from './http/controllers/users/routes'
 import { appointmentRoutes } from './http/controllers/appointment/routes'
 import { doctorRoutes } from './http/controllers/doctor/routes'
 import { patientRoutes } from './http/controllers/patients/routes'
+import fastifyCookie from '@fastify/cookie'
 
 export const app = fastify()
 
 app.register(fastifyJwt, {
   secret: env.JWT_SECRET,
+  cookie: {
+    cookieName: 'refreshToken',
+    signed: false, // Informa que o cookie que está sendo salvo não é assinado
+  },
+  sign: {
+    expiresIn: '10m',
+  },
 })
+
+app.register(fastifyCookie)
 app.register(usersRoutes)
 app.register(doctorRoutes)
 app.register(appointmentRoutes)
@@ -26,8 +36,6 @@ app.setErrorHandler((error, _, reply) => {
 
   if (env.NODE_ENV !== 'production') {
     console.error(error)
-  } else {
-    // TODO: Here we should log to an external tool Like, DataDog
   }
 
   return reply.status(500).send({ message: 'Internal server error.' })
