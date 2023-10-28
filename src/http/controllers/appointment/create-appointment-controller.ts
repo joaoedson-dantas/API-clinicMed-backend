@@ -7,7 +7,6 @@ export async function createAppointment(
   request: FastifyRequest,
   reply: FastifyReply,
 ) {
-  console.log('Valor de start_time:', request.body)
   const createAppointmentBodySchema = z.object({
     patientCPF: z.string().min(11).max(11),
     doctorId: z.string().optional(),

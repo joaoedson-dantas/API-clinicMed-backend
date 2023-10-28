@@ -71,7 +71,6 @@ describe('Create Appontiment (e2e) ', () => {
         start_time: appointmentTime.format(),
       })
 
-    console.log(query.body)
     expect(query.statusCode).toEqual(201)
   })
 })
