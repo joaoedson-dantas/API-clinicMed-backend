@@ -21,11 +21,11 @@ app.register(fastifyJwt, {
   },
 })
 
-app.register(fastifyCookie)
 app.register(usersRoutes)
 app.register(doctorRoutes)
 app.register(appointmentRoutes)
 app.register(patientRoutes)
+app.register(fastifyCookie)
 
 app.setErrorHandler((error, _, reply) => {
   if (error instanceof ZodError) {
