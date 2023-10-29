@@ -10,3 +10,5 @@ export default defineConfig({
   },
   plugins: [tsconfigPaths()],
 })
+/* create-appointment-controller.e2e.spec.ts */
+// *.e2e.spec.ts

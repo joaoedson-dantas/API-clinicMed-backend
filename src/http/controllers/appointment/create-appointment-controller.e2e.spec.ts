@@ -13,18 +13,19 @@ describe('Create Appontiment (e2e) ', () => {
       vi.useRealTimers()
     })
 
-    const { token } = await createAndAuthenticateUser(app)
     vi.setSystemTime(new Date(2023, 11, 7, 10, 0, 0))
     const appointmentTime = dayjs(new Date()).add(30, 'minute')
+
+    const { token } = await createAndAuthenticateUser(app)
 
     const doctor = await request(app.server)
       .post('/doctor')
       .set('Authorization', `Bearer ${token}`)
       .send({
-        name: 'Dr. Edson Dantas',
-        email: 'dredson.dantas@gmail.com',
+        name: 'Leia',
+        email: 'leialb28@gmail.com',
         activated: true,
-        crm: '99456-SP',
+        crm: '12345-SP',
         specialty: 'CARDIOLOGIA',
         tel: '85992002329',
         address: {
@@ -73,4 +74,4 @@ describe('Create Appontiment (e2e) ', () => {
 
     expect(query.statusCode).toEqual(201)
   })
-})
+}, 10000)

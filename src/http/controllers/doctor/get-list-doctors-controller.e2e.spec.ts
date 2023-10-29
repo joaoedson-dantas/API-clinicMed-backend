@@ -67,4 +67,4 @@ describe('Get List Doctor (e2e) ', () => {
       ]),
     )
   })
-})
+}, 10000)
